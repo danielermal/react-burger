@@ -1,0 +1,84 @@
+.h1 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 40px;
+    margin: 40px 0 0;
+}
+
+.menu {
+    max-height: 70vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin: 40px auto;
+}
+
+.menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.menu::-webkit-scrollbar-track {
+    background: #2F2F37;
+    margin-bottom: 52px;
+}
+
+.menu::-webkit-scrollbar-thumb {
+    background: #8585AD;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto 0;
+    width: 100%;
+}
+
+.item:first-of-type {
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 24px;
+    line-height: 30px;
+    margin: 0;
+}
+
+.container {
+    margin: 24px auto 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr;
+    gap: 24px 32px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.image {
+    max-width: 240px;
+    width: 100%;
+    margin: 0 auto;
+    object-fit: cover;
+}
+
+.price {
+    margin: 8px auto;
+    font-size: 28px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.name {
+    font-size: 16px;
+    line-height: 24px;
+    height: 48px;
+    margin: 0 auto;
+}
