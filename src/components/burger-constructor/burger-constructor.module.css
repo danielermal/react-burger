@@ -2,6 +2,27 @@
     margin: 100px auto 0;
     display: flex;
     flex-direction: column;
+    max-width: 584px;
+    width: 100%;
+}
+
+.burger {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-items: end;
+}
+
+.bun {
+    margin: 0 0 0 32px;
+}
+
+.article {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 568px;
 }
 
 .ingridients {
@@ -11,10 +32,12 @@
     gap: 16px;
     max-height: 50vh;
     overflow-y: scroll;
+    width: 100%;
 }
 
 .ingridients::-webkit-scrollbar {
     width: 8px;
+    padding-left: 8px;
 }
 
 .ingridients::-webkit-scrollbar-track {

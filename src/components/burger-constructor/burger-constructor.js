@@ -5,39 +5,39 @@ import { Box } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
+import { cardPropTypes } from '../burger-ingridients/burger-ingridients';
+import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 export const BurgerConstructor = ({cards}) => {
 
-    const ingridients = []
-    cards.forEach((card) => {
-        if (card.type === 'bun') {
-            return card
-        }
-        else {
-            ingridients.push(card)
-        }
-    })
-
     return (
       <div className={burgerConstructor.container}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={200}
-            thumbnail={"https://code.s3.yandex.net/react/code/bun-02.png"}
-          />
+        <div className={burgerConstructor.burger}>
+          <article className={burgerConstructor.bun}>
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text="Краторная булка N-200i (верх)"
+              price={200}
+              thumbnail={"https://code.s3.yandex.net/react/code/bun-02.png"}
+            />
+          </article>
           <div className={burgerConstructor.ingridients}>
-            {ingridients.map((ingridient) => (
-              <ConstructorElement
-                text={ingridient.name}
-                price={ingridient.price}
-                thumbnail={ingridient.image}
-                key={ingridient._id}
-              />
-            ))}
+            {cards.map(
+              (ingridient) =>
+                ingridient.type !== "bun" && (
+                  <article className={burgerConstructor.article} key={ingridient._id}>
+                    <DragIcon type="primary" />
+                    <ConstructorElement
+                      text={ingridient.name}
+                      price={ingridient.price}
+                      thumbnail={ingridient.image}
+                    />
+                  </article>
+                )
+            )}
           </div>
+          <article className={burgerConstructor.bun}>
           <ConstructorElement
             type="bottom"
             isLocked={true}
@@ -45,6 +45,7 @@ export const BurgerConstructor = ({cards}) => {
             price={200}
             thumbnail={"https://code.s3.yandex.net/react/code/bun-02.png"}
           />
+          </article>
         </div>
         <div className={burgerConstructor.total}>
           <p className="mr-10">
@@ -59,23 +60,6 @@ export const BurgerConstructor = ({cards}) => {
     );
 }
 
-BurgerConstructor.propTypes = ({
-  title: PropTypes.string,
-  description: PropTypes.string,
-  calories: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  proteins: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  fats: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  carbohydrates: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-})
+BurgerConstructor.propTypes = {
+  cards: PropTypes.arrayOf(cardPropTypes).isRequired
+}

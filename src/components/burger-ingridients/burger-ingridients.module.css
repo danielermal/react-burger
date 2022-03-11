@@ -14,6 +14,10 @@
     margin: 40px auto;
 }
 
+.tab {
+    display: flex;
+}
+
 .menu::-webkit-scrollbar {
     width: 8px;
 }

@@ -7,27 +7,12 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 
-export const BurgerIngridients = ({cards}) => {
+export const BurgerIngridients = ({bun, sauce, main}) => {
     const [current, setCurrent] = React.useState('Булки')
-    const bun = []
-    const main = []
-    const sauce = []
-     cards.forEach((card) => {
-        if (card.type === "bun") {
-            bun.push(card)
-        }
-        else if (card.type === "main") {
-            main.push(card)
-        }
-        else {
-            sauce.push(card)
-        }
-    })
-    console.log(bun, main, sauce)
     return (
         <div>
             <h1 className={burgerIngridients.h1}>Соберите бургер</h1>
-            <div style={{ display: 'flex' }} className='mt-5'>
+            <div className={`mt-5 ${burgerIngridients.tab}`}>
                 <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
                 Булки
                 </Tab>
@@ -86,17 +71,20 @@ const Card = (props) => {
     )
 }
 
-BurgerIngridients.propTypes = ({
-    title: PropTypes.string,
-    description: PropTypes.string,
+
+export const cardPropTypes = PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    proteins: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
     calories: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
-    ]),
-    proteins: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    ]).isRequired,
+    price: PropTypes.number.isRequired,
     fats: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
@@ -105,4 +93,19 @@ BurgerIngridients.propTypes = ({
       PropTypes.string,
       PropTypes.number,
     ]),
+    image: PropTypes.string.isRequired
   })
+
+BurgerIngridients.propTypes = {
+    bun: PropTypes.arrayOf(cardPropTypes).isRequired,
+    main: PropTypes.arrayOf(cardPropTypes).isRequired,
+    sauce: PropTypes.arrayOf(cardPropTypes).isRequired
+  }
+
+  CardContainer.propTypes = {
+    cards: PropTypes.arrayOf(cardPropTypes).isRequired
+  }
+
+  Card.propTypes = {
+    cardPropTypes
+  }
