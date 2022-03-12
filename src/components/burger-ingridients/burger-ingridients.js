@@ -6,6 +6,7 @@ import { Typography } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
+import { cardPropTypes } from '../../utils/types';
 
 export const BurgerIngridients = ({bun, sauce, main}) => {
     const [current, setCurrent] = React.useState('Булки')
@@ -71,31 +72,6 @@ const Card = (props) => {
     )
 }
 
-
-export const cardPropTypes = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-      ]),
-    calories: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]).isRequired,
-    price: PropTypes.number.isRequired,
-    fats: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
-    carbohydrates: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
-    image: PropTypes.string.isRequired
-  })
-
 BurgerIngridients.propTypes = {
     bun: PropTypes.arrayOf(cardPropTypes).isRequired,
     main: PropTypes.arrayOf(cardPropTypes).isRequired,
@@ -103,9 +79,12 @@ BurgerIngridients.propTypes = {
   }
 
   CardContainer.propTypes = {
-    cards: PropTypes.arrayOf(cardPropTypes).isRequired
+    cards: PropTypes.arrayOf(cardPropTypes).isRequired,
+    title: PropTypes.string.isRequired
   }
 
   Card.propTypes = {
-    cardPropTypes
+    img: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired
   }

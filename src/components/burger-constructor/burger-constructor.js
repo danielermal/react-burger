@@ -5,8 +5,8 @@ import { Box } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
-import { cardPropTypes } from '../burger-ingridients/burger-ingridients';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { cardPropTypes } from '../../utils/types';
 
 export const BurgerConstructor = ({cards}) => {
 
