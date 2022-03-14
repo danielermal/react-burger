@@ -1,6 +1,6 @@
 import React from 'react'
 import ingredient from './ingredient.module.css'
-import { cardPropTypes } from '../../utils/types'
+import { cardPropTypes } from '../../utils/constants'
 
 export const IngridientDetails = ({card}) => {
     

@@ -1,7 +1,7 @@
 import React from 'react'
 import modal from './modal-overlay.module.css'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { cardPropTypes } from '../../utils/types'
+import { cardPropTypes } from '../../utils/constants'
 import PropTypes from 'prop-types';
 
 export const Modal = (props) => {

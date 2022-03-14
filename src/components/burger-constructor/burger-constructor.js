@@ -6,7 +6,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { cardPropTypes } from '../../utils/types';
+import { cardPropTypes } from '../../utils/constants';
 import { ModalOverlay } from '../modal-overlay/modal-overlay';
 import { Modal } from '../modal/modal';
 import { OrderDetails } from '../order-details/order-details'

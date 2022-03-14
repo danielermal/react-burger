@@ -4,7 +4,7 @@ import {AppHeader} from '../app-header/app-header.js'
 import styles from './styles.module.css'
 import {BurgerIngridients} from '../burger-ingridients/burger-ingridients.js'
 import {BurgerConstructor} from '../burger-constructor/burger-constructor.js'
-import {URL} from '../../utils/types'
+import {URL} from '../../utils/constants'
 
 export const App = () => {
   const [state, setState] = React.useState({

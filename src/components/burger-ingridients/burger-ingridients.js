@@ -6,7 +6,7 @@ import { Typography } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
-import { cardPropTypes } from '../../utils/types';
+import { cardPropTypes } from '../../utils/constants';
 
 export const BurgerIngridients = ({bun, sauce, main}) => {
     const [current, setCurrent] = React.useState('Булки')
