@@ -6,7 +6,7 @@ body {
   color: #F2F2F3;
   min-width: 320px;
   margin: 0 auto;
-  font-family: "JetBrains Mono", Arial, sans-serif;
+  font-family: "JetBrains Mono", "Iceland", sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

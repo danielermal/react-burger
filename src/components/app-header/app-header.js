@@ -6,8 +6,6 @@ import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-console.log(appHeader)
-
 export const AppHeader = () => {
     return (
         <header className={`p-4 ${appHeader.header}`}>
@@ -17,16 +15,16 @@ export const AppHeader = () => {
                     <BurgerIcon type="primary" />
                     <span className="ml-2" >Конструктор</span>
                     </button>
-                    <button type='button' className={`${appHeader.button} p-5 p-4`}>
-                    <ListIcon type="primary" />
+                    <button type='button' className={`${appHeader.button} ${appHeader.button_purple} p-5 p-4`}>
+                    <ListIcon type="secondary" />
                     <span className="ml-2">Лента заказов</span>
                     </button>
                 </div>
 
                 <Logo className={appHeader.logo} />
                 
-                <button type='button' className={`${appHeader.button} ${appHeader.button_last}`}>
-                <ProfileIcon type="primary" />
+                <button type='button' className={`${appHeader.button} ${appHeader.button_last} ${appHeader.button_purple}`}>
+                <ProfileIcon type="secondary" />
                 <span className="ml-2">Личный кабинет</span>
                 </button>
             </nav>
