@@ -7,19 +7,15 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { cardPropTypes } from '../../utils/constants';
-import { ModalOverlay } from '../modal-overlay/modal-overlay';
 import { Modal } from '../modal/modal';
 import { OrderDetails } from '../order-details/order-details'
-import { IngridientDetails } from '../ingredient-details/ingredient-details'
+import { Typography } from '@ya.praktikum/react-developer-burger-ui-components'
 
 
-const Bun = React.memo (({bun, onCardClick, type, position}) => {
-  const handleClick = () => {
-    onCardClick(bun)
-  }
+const Bun = ({bun, type, position}) => {
 
   return (
-    <article className={burgerConstructor.bun} onClick={handleClick}>
+    <article className={burgerConstructor.bun}>
     <ConstructorElement
       type={type}
       isLocked={true}
@@ -29,15 +25,12 @@ const Bun = React.memo (({bun, onCardClick, type, position}) => {
     />
   </article>
   )
-})
+}
 
-const ListItem = React.memo (({item, onCardClick}) => {
-  const handleClick = () => {
-    onCardClick(item)
-  }
+const ListItem = ({item}) => {
 
   return (
-    <article className={burgerConstructor.article} onClick={handleClick} >
+    <article className={burgerConstructor.article} >
     <DragIcon type="primary" />
     <ConstructorElement
       text={item.name}
@@ -46,7 +39,7 @@ const ListItem = React.memo (({item, onCardClick}) => {
     />
   </article>
   )
-})
+}
 
 export const BurgerConstructor = ({cards}) => {
 
@@ -56,27 +49,23 @@ export const BurgerConstructor = ({cards}) => {
     setState({...state, overlay: false})
   }
 
-  const openModalIngredient = React.useCallback ((item) => {
-      setState({...state, overlay:true, ingridient: item})
-    }, [])
-
     const openModalOrder = () => {
-      setState({...state, overlay: true, ingridient: false})
+      setState({...state, overlay: true})
     }
   
 
     return (
       <div className={burgerConstructor.container}>
         <div className={burgerConstructor.burger}>
-          <Bun bun={cards[0]} type='top' position='(верх)' onCardClick={openModalIngredient} />
+          <Bun bun={cards[0]} type='top' position='(верх)' />
           <div className={burgerConstructor.ingridients}>
             {cards.map(
               (item) =>
                 item.type !== "bun" && 
-              <ListItem key={item._id} item={item} onCardClick={openModalIngredient} />
+              <ListItem key={item._id} item={item} />
             )}
           </div>
-          <Bun bun={cards[0]} type='bottom' position='(низ)' onCardClick={openModalIngredient} />
+          <Bun bun={cards[0]} type='bottom' position='(низ)' />
         </div>
         <div className={burgerConstructor.total}>
           <p className="mr-10">
@@ -86,12 +75,10 @@ export const BurgerConstructor = ({cards}) => {
           <Button type="primary" size="large" onClick={openModalOrder} >
             Оформить заказ
           </Button>
-          {state.overlay && 
-          <ModalOverlay onClose={closeModal} card={state.ingridient}>
-            <Modal onClose={closeModal}>
-              {state.ingridient ? <IngridientDetails card={state.ingridient} /> : <OrderDetails />}
-            </Modal>
-          </ModalOverlay>}
+          {state.overlay &&
+            <Modal onClose={closeModal} title={<h1 className='text text_type_digits-large mt-30'>034536</h1>} >
+              <OrderDetails />
+            </Modal>}
         </div>
       </div>
     );
@@ -102,13 +89,11 @@ BurgerConstructor.propTypes = {
 }
 
 ListItem.propTypes = {
-  item: cardPropTypes.isRequired,
-  onCardClick: PropTypes.func.isRequired
+  item: cardPropTypes.isRequired
 }
 
 Bun.propTypes = {
   bun: cardPropTypes.isRequired,
-  onCardClick: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   position: PropTypes.string.isRequired
 }

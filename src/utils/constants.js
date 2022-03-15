@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const URL = 'https://norma.nomoreparties.space/api/ingredients'
+export const URL = 'https://norma.nomoreparties.space/api/'
 
 export const cardPropTypes = PropTypes.shape({
     _id: PropTypes.string.isRequired,

@@ -2,7 +2,7 @@ import React from 'react' // импорт библиотеки
 import ReactDOM from 'react-dom'    
 import {AppHeader} from '../app-header/app-header.js'
 import styles from './styles.module.css'
-import {BurgerIngridients} from '../burger-ingridients/burger-ingridients.js'
+import {BurgerIngredients} from '../burger-ingredients/burger-ingredients.js'
 import {BurgerConstructor} from '../burger-constructor/burger-constructor.js'
 import {URL} from '../../utils/constants'
 
@@ -13,24 +13,28 @@ export const App = () => {
     data: []
   })
 
-  const getIngridients = async () =>  {
+  const getIngredients = async () =>  {
     setState({...state, hasError: false, isLoading: true})
-    await fetch(URL)
-    .then(res => res.json())
+    await fetch(`${URL}ingredients`)
+    .then((res) => {
+      console.log(res.ok)
+      return res.json()
+    })
+    
     .then((data) => {
       const bun = []
       const main = []
       const sauce = []
     
-    data.data.forEach((ingridient) => {
-        if (ingridient.type === "bun") {
-            bun.push(ingridient)
+    data.data.forEach((ingredient) => {
+        if (ingredient.type === "bun") {
+            bun.push(ingredient)
         }
-        else if (ingridient.type === "main") {
-            main.push(ingridient)
+        else if (ingredient.type === "main") {
+            main.push(ingredient)
         }
         else {
-            sauce.push(ingridient)
+            sauce.push(ingredient)
         }
     })
       setState({...state, isLoading: false, data: data.data, bun, main, sauce})})
@@ -39,7 +43,7 @@ export const App = () => {
 
   React.useEffect(() => {
     document.title = 'react burger'
-    getIngridients()
+    getIngredients()
   }, [])
 
   const { data, isLoading, hasError, bun, main, sauce } = state
@@ -53,7 +57,7 @@ export const App = () => {
                 <AppHeader/>
                 <main>
                   <section className={styles.section}>
-                    <BurgerIngridients bun={bun} sauce={sauce} main={main} />
+                    <BurgerIngredients bun={bun} sauce={sauce} main={main} />
                     <BurgerConstructor cards={data}/>
                   </section>
                 </main>

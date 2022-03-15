@@ -1,15 +1,11 @@
 import React from 'react'
 import order from './order-details.module.css'
-import {Typography} from '@ya.praktikum/react-developer-burger-ui-components'
 import doneImg from '../../images/done.png'
 
 export const OrderDetails = () => {
 
     return (
         <>
-            <h1 className={`text text_type_digits-large ${order.h1}`}>
-                034536
-            </h1>
             <p className={order.identity}>
             идентификатор заказа
             </p>

@@ -4,18 +4,16 @@ import modal from './modal-overlay.module.css'
 import PropTypes from 'prop-types';
 
 
-const modalRoot = document.querySelector('#root')
-
 export const ModalOverlay = (props) => {
 
-    return ReactDOM.createPortal(
-      <div className={`${modal.overlay} ${modal.overlay_active}`}>
+    return (
+      <div className={`${modal.overlay} ${modal.overlay_active}`} onClick={props.close}>
         {props.children}
-      </div>,
-      modalRoot
+      </div>
     );
 }
 
 ModalOverlay.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.element.isRequired,
+  close: PropTypes.func.isRequired
 }
