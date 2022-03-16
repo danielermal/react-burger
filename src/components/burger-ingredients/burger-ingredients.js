@@ -10,7 +10,7 @@ import { cardPropTypes } from '../../utils/constants';
 import { Modal } from '../modal/modal';
 import { IngridientDetails } from '../ingredient-details/ingredient-details';
 
-export const BurgerIngredients = ({bun, sauce, main}) => {
+export const BurgerIngredients = ({cards}) => {
     const [current, setCurrent] = React.useState('Булки')
 
     const [state, setState] = React.useState({overlay: false})
@@ -22,6 +22,22 @@ export const BurgerIngredients = ({bun, sauce, main}) => {
     const openModalIngredient = React.useCallback ((item) => {
         setState({...state, overlay:true, ingridient: item})
       }, [])
+
+    const bun = []
+    const main = []
+    const sauce = []
+
+    cards.forEach((ingredient) => {
+        if (ingredient.type === "bun") {
+            bun.push(ingredient)
+        }
+        else if (ingredient.type === "main") {
+            main.push(ingredient)
+        }
+        else {
+            sauce.push(ingredient)
+        }
+    })
   
     return (
         <div>
@@ -42,9 +58,7 @@ export const BurgerIngredients = ({bun, sauce, main}) => {
                 <CardContainer title='Соусы' cards={sauce} key='sauce' openModal={openModalIngredient}/>
                 <CardContainer title='Начинки' cards={main} key='main' openModal={openModalIngredient}/>
             </div>
-            {state.overlay && <Modal onClose={closeModal} title={<h1 className={burgerIngredients.details_title}>
-            Детали ингредиента
-            </h1>} >
+            {state.overlay && <Modal onClose={closeModal} title={true} >
                 <IngridientDetails card={state.ingridient} />
             </Modal> }
         </div>
@@ -92,9 +106,7 @@ const Card = ({card, openModal}) => {
 }
 
 BurgerIngredients.propTypes = {
-    bun: PropTypes.arrayOf(cardPropTypes).isRequired,
-    main: PropTypes.arrayOf(cardPropTypes).isRequired,
-    sauce: PropTypes.arrayOf(cardPropTypes).isRequired
+    cards: PropTypes.arrayOf(cardPropTypes).isRequired,
   }
 
   CardContainer.propTypes = {

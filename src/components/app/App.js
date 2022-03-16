@@ -17,27 +17,14 @@ export const App = () => {
     setState({...state, hasError: false, isLoading: true})
     await fetch(`${URL}ingredients`)
     .then((res) => {
-      console.log(res.ok)
-      return res.json()
+      if (res.ok) {
+        return res.json()
+      }
+      return Promise.reject(`Ошибка: ${res.status}`)
     })
     
     .then((data) => {
-      const bun = []
-      const main = []
-      const sauce = []
-    
-    data.data.forEach((ingredient) => {
-        if (ingredient.type === "bun") {
-            bun.push(ingredient)
-        }
-        else if (ingredient.type === "main") {
-            main.push(ingredient)
-        }
-        else {
-            sauce.push(ingredient)
-        }
-    })
-      setState({...state, isLoading: false, data: data.data, bun, main, sauce})})
+      setState({...state, isLoading: false, data: data.data})})
     .catch(err => setState({...state, hasError: true, isLoading: false}))
   }
 
@@ -46,7 +33,7 @@ export const App = () => {
     getIngredients()
   }, [])
 
-  const { data, isLoading, hasError, bun, main, sauce } = state
+  const { data, isLoading, hasError} = state
 
     return (
       <>
@@ -57,7 +44,7 @@ export const App = () => {
                 <AppHeader/>
                 <main>
                   <section className={styles.section}>
-                    <BurgerIngredients bun={bun} sauce={sauce} main={main} />
+                    <BurgerIngredients cards={data} />
                     <BurgerConstructor cards={data}/>
                   </section>
                 </main>

@@ -53,15 +53,15 @@ export const BurgerConstructor = ({cards}) => {
       setState({...state, overlay: true})
     }
   
+    const ingredients = cards.filter(item => item.type !== 'bun')
 
     return (
       <div className={burgerConstructor.container}>
         <div className={burgerConstructor.burger}>
           <Bun bun={cards[0]} type='top' position='(верх)' />
           <div className={burgerConstructor.ingridients}>
-            {cards.map(
+            {ingredients.map(
               (item) =>
-                item.type !== "bun" && 
               <ListItem key={item._id} item={item} />
             )}
           </div>
@@ -76,7 +76,7 @@ export const BurgerConstructor = ({cards}) => {
             Оформить заказ
           </Button>
           {state.overlay &&
-            <Modal onClose={closeModal} title={<h1 className='text text_type_digits-large mt-30'>034536</h1>} >
+            <Modal onClose={closeModal} title={false} >
               <OrderDetails />
             </Modal>}
         </div>

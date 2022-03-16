@@ -24,3 +24,10 @@
     border: none;
     cursor: pointer;
 }
+
+.title {
+    margin: 40px auto 0 40px;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 40px;
+  }

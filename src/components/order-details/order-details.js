@@ -6,6 +6,7 @@ export const OrderDetails = () => {
 
     return (
         <>
+            <h1 className='text text_type_digits-large mt-30'>034536</h1>
             <p className={order.identity}>
             идентификатор заказа
             </p>
