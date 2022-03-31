@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredients from './burger-ingredients.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -9,8 +9,12 @@ import PropTypes from 'prop-types';
 import { cardPropTypes } from '../../utils/constants';
 import { Modal } from '../modal/modal';
 import { IngridientDetails } from '../ingredient-details/ingredient-details';
+import { UserContext } from '../../utils/userContext';
 
-export const BurgerIngredients = ({cards}) => {
+export const BurgerIngredients = () => {
+
+    const {data} = React.useContext(UserContext)
+    
     const [current, setCurrent] = React.useState('Булки')
 
     const [state, setState] = React.useState({overlay: false})
@@ -27,7 +31,7 @@ export const BurgerIngredients = ({cards}) => {
     const main = []
     const sauce = []
 
-    cards.forEach((ingredient) => {
+    data.forEach((ingredient) => {
         if (ingredient.type === "bun") {
             bun.push(ingredient)
         }
