@@ -1,21 +1,6 @@
-import { data } from "./data";
 import PropTypes from 'prop-types';
 
-export const bun = []
-export const main = []
-export const sauce = []
-
-data.forEach((ingridient) => {
-    if (ingridient.type === "bun") {
-        bun.push(ingridient)
-    }
-    else if (ingridient.type === "main") {
-        main.push(ingridient)
-    }
-    else {
-        sauce.push(ingridient)
-    }
-})
+export const URL = 'https://norma.nomoreparties.space/api/'
 
 export const cardPropTypes = PropTypes.shape({
     _id: PropTypes.string.isRequired,
