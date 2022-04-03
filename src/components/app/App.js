@@ -5,7 +5,7 @@ import styles from './styles.module.css'
 import {BurgerIngredients} from '../burger-ingredients/burger-ingredients.js'
 import {BurgerConstructor} from '../burger-constructor/burger-constructor.js'
 import {URL} from '../../utils/constants'
-import { UserContext } from '../../utils/userContext.js'
+import { UserContext } from '../../services/userContext.js'
 
 export const App = () => {
 
@@ -48,8 +48,12 @@ export const App = () => {
 
   const { data, isLoading, hasError} = state
 
+  const context = React.useMemo(() => {
+    return {data, total, dispatch}
+  }, [data, total, dispatch])
+
     return (
-      <UserContext.Provider value={{data, total, dispatch}}>
+      <UserContext.Provider value={context}>
         {isLoading && 'Загрузка...'}
         {hasError && 'Произошла ошибка'}
         {!isLoading && !hasError && data.length &&
@@ -57,8 +61,8 @@ export const App = () => {
                 <AppHeader/>
                 <main>
                   <section className={styles.section}>
-                    <BurgerIngredients cards={data} />
-                    <BurgerConstructor cards={data}/>
+                    <BurgerIngredients />
+                    <BurgerConstructor />
                   </section>
                 </main>
           </>

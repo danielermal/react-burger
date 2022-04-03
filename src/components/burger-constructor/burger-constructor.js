@@ -10,7 +10,7 @@ import { cardPropTypes } from '../../utils/constants';
 import { Modal } from '../modal/modal';
 import { OrderDetails } from '../order-details/order-details'
 import { Typography } from '@ya.praktikum/react-developer-burger-ui-components'
-import { UserContext } from '../../utils/userContext';
+import { UserContext } from '../../services/userContext';
 import { URL } from '../../utils/constants';
 
 
@@ -99,7 +99,6 @@ export const BurgerConstructor = () => {
       
       .then((data) => {
         setState({...state, overlay: true, isLoading: false, order: data.order.number})
-        console.log(state)
       })
       .catch(err => setState({...state, hasError: true, isLoading: false}))
     }
@@ -127,7 +126,7 @@ export const BurgerConstructor = () => {
             Оформить заказ
           </Button>
           {state.overlay &&   
-            <Modal onClose={closeModal} title={false} >
+            <Modal onClose={closeModal} title={''} >
                 {state.isLoading && 'Загрузка...'}
                 {state.hasError && 'Произошла ошибка'}
                 {!state.isLoading && !state.hasError &&
@@ -136,10 +135,6 @@ export const BurgerConstructor = () => {
         </div>
       </div>
     );
-}
-
-BurgerConstructor.propTypes = {
-  cards: PropTypes.arrayOf(cardPropTypes).isRequired
 }
 
 ListItem.propTypes = {
