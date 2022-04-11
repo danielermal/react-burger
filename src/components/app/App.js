@@ -4,69 +4,40 @@ import {AppHeader} from '../app-header/app-header.js'
 import styles from './styles.module.css'
 import {BurgerIngredients} from '../burger-ingredients/burger-ingredients.js'
 import {BurgerConstructor} from '../burger-constructor/burger-constructor.js'
-import {URL} from '../../utils/constants'
-import { UserContext } from '../../services/userContext.js'
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredients } from '../../services/actions/index.js'
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 
 export const App = () => {
 
-  const initialState = { price: 0, id: [] };
-
-  function reducer (state, action) {
-  return {
-    price: state.price + action.price,
-    id: [...state.id, action.id]
-    }
-  }
-
-  const [total, dispatch] = React.useReducer(reducer, initialState);
-
-  const [state, setState] = React.useState({
-    isLoading: false,
-    hasError: false,
-    data: []
-  })
-
-  const getIngredients = async () =>  {
-    setState({...state, hasError: false, isLoading: true})
-    await fetch(`${URL}ingredients`)
-    .then((res) => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`)
-    })
-    
-    .then((data) => {
-      setState({...state, isLoading: false, data: data.data})})
-    .catch(err => setState({...state, hasError: true, isLoading: false}))
-  }
+  const { items, itemsRequest, itemsFailed} = useSelector(store => store.reducer)
+  
+  const dispatch = useDispatch()
 
   React.useEffect(() => {
-    document.title = 'react burger'
-    getIngredients()
-  }, [])
-
-  const { data, isLoading, hasError} = state
-
-  const context = React.useMemo(() => {
-    return {data, total, dispatch}
-  }, [data, total, dispatch])
+      document.title = 'react burger'
+      dispatch(getIngredients())
+  }, [dispatch])
 
     return (
-      <UserContext.Provider value={context}>
-        {isLoading && 'Загрузка...'}
-        {hasError && 'Произошла ошибка'}
-        {!isLoading && !hasError && data.length &&
+      <>
+        {itemsRequest && 'Загрузка...'}
+        {itemsFailed && 'Произошла ошибка'}
+        {!itemsRequest && !itemsFailed && items.length && 
           <>
                 <AppHeader/>
                 <main>
                   <section className={styles.section}>
-                    <BurgerIngredients />
-                    <BurgerConstructor />
+                    <DndProvider backend={HTML5Backend}>
+                      <BurgerIngredients />
+                      <BurgerConstructor />
+                    </DndProvider>
                   </section>
                 </main>
           </>
         }
-      </UserContext.Provider>
+        </>
     )
 }
