@@ -29,11 +29,12 @@ export const Modal = (props) => {
 
     return ReactDOM.createPortal (
         <ModalOverlay close={closeModal} >
-            <div className={modal.container}>
-                {props.title && 
+            <div className={modal.container} onClick={e => e.stopPropagation()}>
+                {props.title ?
                 <h1 className={modal.title}>
-                    Детали ингредиента
-                </h1>}
+                    {props.title}
+                </h1>
+                : <></>}
                 <button className={modal.button} onClick={closeModal}>
                     <CloseIcon type="primary" />
                 </button>
@@ -46,6 +47,9 @@ export const Modal = (props) => {
 
 Modal.propTypes = {
     onClose: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
-    title: PropTypes.bool.isRequired
+    children: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.element
+    ]).isRequired,
+    title: PropTypes.string.isRequired
 }

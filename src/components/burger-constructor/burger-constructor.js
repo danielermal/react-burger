@@ -10,9 +10,20 @@ import { cardPropTypes } from '../../utils/constants';
 import { Modal } from '../modal/modal';
 import { OrderDetails } from '../order-details/order-details'
 import { Typography } from '@ya.praktikum/react-developer-burger-ui-components'
+import { UserContext } from '../../services/userContext';
+import { URL } from '../../utils/constants';
 
 
 const Bun = ({bun, type, position}) => {
+
+  const {dispatch} = React.useContext(UserContext)
+  
+  React.useEffect(() => {
+    dispatch({
+      price: bun.price,
+      id: bun._id
+    })
+  }, [])
 
   return (
     <article className={burgerConstructor.bun}>
@@ -29,6 +40,15 @@ const Bun = ({bun, type, position}) => {
 
 const ListItem = ({item}) => {
 
+  const {dispatch} = React.useContext(UserContext)
+  
+  React.useEffect(() => {
+    dispatch({
+      price: item.price,
+      id: item._id
+    })
+  }, [])
+
   return (
     <article className={burgerConstructor.article} >
     <DragIcon type="primary" />
@@ -41,51 +61,80 @@ const ListItem = ({item}) => {
   )
 }
 
-export const BurgerConstructor = ({cards}) => {
 
-  const [state, setState] = React.useState({overlay: false})
+
+export const BurgerConstructor = () => {
+
+  const {data, total} = React.useContext(UserContext)
+
+  const [state, setState] = React.useState({
+    overlay: false,
+    isLoading: false,
+    hasError: false
+  })
 
   const closeModal = () => {
     setState({...state, overlay: false})
   }
 
     const openModalOrder = () => {
-      setState({...state, overlay: true})
+      getOrderNumber()
+    }
+
+    const getOrderNumber = async () =>  {
+      setState({...state, overlay: true, hasError: false, isLoading: true})
+      await fetch(`${URL}orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({ingredients: total.id})
+      })
+      .then((res) => {
+        if (res.ok) {
+          return res.json()
+        }
+        return Promise.reject(`Ошибка: ${res.status}`)
+      })
+      
+      .then((data) => {
+        setState({...state, overlay: true, isLoading: false, order: data.order.number})
+      })
+      .catch(err => setState({...state, hasError: true, isLoading: false}))
     }
   
-    const ingredients = cards.filter(item => item.type !== 'bun')
+    const ingredients = data.filter(item => item.type !== 'bun')
 
     return (
       <div className={burgerConstructor.container}>
         <div className={burgerConstructor.burger}>
-          <Bun bun={cards[0]} type='top' position='(верх)' />
+          <Bun bun={data[0]} type='top' position='(верх)' />
           <div className={burgerConstructor.ingridients}>
             {ingredients.map(
               (item) =>
               <ListItem key={item._id} item={item} />
             )}
           </div>
-          <Bun bun={cards[0]} type='bottom' position='(низ)' />
+          <Bun bun={data[0]} type='bottom' position='(низ)' />
         </div>
         <div className={burgerConstructor.total}>
           <p className="mr-10">
-            <span className="text text_type_digits-medium mr-2">610</span>
+            <span className="text text_type_digits-medium mr-2">{total.price}</span>
             <CurrencyIcon type="primary" />
           </p>
           <Button type="primary" size="large" onClick={openModalOrder} >
             Оформить заказ
           </Button>
-          {state.overlay &&
-            <Modal onClose={closeModal} title={false} >
-              <OrderDetails />
+          {state.overlay &&   
+            <Modal onClose={closeModal} title={''} >
+                {state.isLoading && 'Загрузка...'}
+                {state.hasError && 'Произошла ошибка'}
+                {!state.isLoading && !state.hasError &&
+              <OrderDetails number={state.order} />}
             </Modal>}
         </div>
       </div>
     );
-}
-
-BurgerConstructor.propTypes = {
-  cards: PropTypes.arrayOf(cardPropTypes).isRequired
 }
 
 ListItem.propTypes = {

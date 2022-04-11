@@ -1,12 +1,13 @@
 import React from 'react'
 import order from './order-details.module.css'
 import doneImg from '../../images/done.png'
+import PropTypes from 'prop-types';
 
-export const OrderDetails = () => {
+export const OrderDetails = ({number}) => {
 
     return (
         <>
-            <h1 className='text text_type_digits-large mt-30'>034536</h1>
+            <h1 className='text text_type_digits-large mt-30'>{number}</h1>
             <p className={order.identity}>
             идентификатор заказа
             </p>
@@ -15,4 +16,8 @@ export const OrderDetails = () => {
             <span className={order.span}>Дождитесь готовности на орбитальной станции</span>
         </>
     )
+}
+
+OrderDetails.propTypes = {
+    number: PropTypes.number.isRequired
 }

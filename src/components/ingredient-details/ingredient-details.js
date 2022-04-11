@@ -4,7 +4,7 @@ import { cardPropTypes } from '../../utils/constants'
 import { Box } from '@ya.praktikum/react-developer-burger-ui-components'
 
 
-export const IngridientDetails = ({card}) => {
+export const IngredientDetails = ({card}) => {
     
     return (
         <>
@@ -32,6 +32,6 @@ export const IngridientDetails = ({card}) => {
     )
 }
 
-IngridientDetails.propTypes = {
+IngredientDetails.propTypes = {
     card: cardPropTypes.isRequired
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredients from './burger-ingredients.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -8,9 +8,13 @@ import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import { cardPropTypes } from '../../utils/constants';
 import { Modal } from '../modal/modal';
-import { IngridientDetails } from '../ingredient-details/ingredient-details';
+import { IngredientDetails } from '../ingredient-details/ingredient-details';
+import { UserContext } from '../../services/userContext';
 
-export const BurgerIngredients = ({cards}) => {
+export const BurgerIngredients = () => {
+
+    const {data} = React.useContext(UserContext)
+    
     const [current, setCurrent] = React.useState('Булки')
 
     const [state, setState] = React.useState({overlay: false})
@@ -27,7 +31,7 @@ export const BurgerIngredients = ({cards}) => {
     const main = []
     const sauce = []
 
-    cards.forEach((ingredient) => {
+    data.forEach((ingredient) => {
         if (ingredient.type === "bun") {
             bun.push(ingredient)
         }
@@ -58,8 +62,8 @@ export const BurgerIngredients = ({cards}) => {
                 <CardContainer title='Соусы' cards={sauce} key='sauce' openModal={openModalIngredient}/>
                 <CardContainer title='Начинки' cards={main} key='main' openModal={openModalIngredient}/>
             </div>
-            {state.overlay && <Modal onClose={closeModal} title={true} >
-                <IngridientDetails card={state.ingridient} />
+            {state.overlay && <Modal onClose={closeModal} title={'Детали заказа'} >
+                <IngredientDetails card={state.ingridient} />
             </Modal> }
         </div>
     )
@@ -105,15 +109,13 @@ const Card = ({card, openModal}) => {
     )
 }
 
-BurgerIngredients.propTypes = {
-    cards: PropTypes.arrayOf(cardPropTypes).isRequired,
-  }
-
   CardContainer.propTypes = {
     cards: PropTypes.arrayOf(cardPropTypes).isRequired,
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    openModal: PropTypes.func.isRequired
   }
 
   Card.propTypes = {
-    card: cardPropTypes.isRequired
+    card: cardPropTypes.isRequired,
+    openModal: PropTypes.func.isRequired
   }

@@ -5,8 +5,21 @@ import styles from './styles.module.css'
 import {BurgerIngredients} from '../burger-ingredients/burger-ingredients.js'
 import {BurgerConstructor} from '../burger-constructor/burger-constructor.js'
 import {URL} from '../../utils/constants'
+import { UserContext } from '../../services/userContext.js'
 
 export const App = () => {
+
+  const initialState = { price: 0, id: [] };
+
+  function reducer (state, action) {
+  return {
+    price: state.price + action.price,
+    id: [...state.id, action.id]
+    }
+  }
+
+  const [total, dispatch] = React.useReducer(reducer, initialState);
+
   const [state, setState] = React.useState({
     isLoading: false,
     hasError: false,
@@ -35,8 +48,12 @@ export const App = () => {
 
   const { data, isLoading, hasError} = state
 
+  const context = React.useMemo(() => {
+    return {data, total, dispatch}
+  }, [data, total, dispatch])
+
     return (
-      <>
+      <UserContext.Provider value={context}>
         {isLoading && 'Загрузка...'}
         {hasError && 'Произошла ошибка'}
         {!isLoading && !hasError && data.length &&
@@ -44,12 +61,12 @@ export const App = () => {
                 <AppHeader/>
                 <main>
                   <section className={styles.section}>
-                    <BurgerIngredients cards={data} />
-                    <BurgerConstructor cards={data}/>
+                    <BurgerIngredients />
+                    <BurgerConstructor />
                   </section>
                 </main>
           </>
         }
-      </>
+      </UserContext.Provider>
     )
 }
