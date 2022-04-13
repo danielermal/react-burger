@@ -15,7 +15,7 @@ import { getOrder } from '../../services/actions';
 import { useDrag } from 'react-dnd';
 import { useDrop } from 'react-dnd';
 import { ADD_ITEM, DELETE_ITEM, CHANGE_ITEM } from '../../services/actions';
-import { hover } from '@testing-library/user-event/dist/hover';
+import { v4 as uuidv4 } from 'uuid';
 
 const Bun = ({bun, type, position}) => {
 
@@ -53,7 +53,7 @@ const ListItem = ({item, index}) => {
     })
   }
 
-  const [{hoverIndex, dragIndex}, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: 'ingredient',
     drop(item) {
       changeItem(index, item)
@@ -63,7 +63,6 @@ const ListItem = ({item, index}) => {
   drag(drop(ref))
 
   const changeItem = (hoverIndex, item) => {
-    console.log(hoverIndex, item)
     dispatch({
       type: CHANGE_ITEM,
       dragItem: item.item,
@@ -91,9 +90,8 @@ export const BurgerConstructor = () => {
   const dispatch = useDispatch()
 
   const {constructorItems, bun} = useSelector(store => store.reducer)
-  console.log(constructorItems)
-  const ingredients = [...constructorItems, bun]
-  const totalPrice = ingredients.reduce((acc, item) => acc + item.price, 0)
+  const ingredients = [constructorItems, bun]
+  const totalPrice = constructorItems.reduce((acc, item) => acc + item.price, 0) + (typeof(bun.price) == 'number' ? bun.price : 0)
   const totalId = ingredients.map(item => item._id)
   const [state, setState] = React.useState({
     overlay: false
@@ -134,7 +132,7 @@ export const BurgerConstructor = () => {
           <div className={burgerConstructor.ingridients}>
             {constructorItems.map(
               (item, index) =>
-              <ListItem key={index} item={item} index={index} />
+              <ListItem key={uuidv4()} item={item} index={index} />
             )}
           </div>
           {bun.price && <Bun bun={bun} type='bottom' position='(низ)' />}
@@ -144,8 +142,8 @@ export const BurgerConstructor = () => {
             <span className="text text_type_digits-medium mr-2">{totalPrice ? totalPrice : 0}</span>
             <CurrencyIcon type="primary" />
           </p>
-          <Button type="primary" size="large" onClick={openModalOrder} >
-            Оформить заказ
+          <Button type="primary" size="large" onClick={openModalOrder} disabled={(bun.price && constructorItems.length) ? false : true} >
+            {(bun.price && constructorItems.length) ? 'Оформить заказ' : 'Добавьте булку и ингредиенты'}
           </Button>
           {state.overlay &&   
             <Modal onClose={closeModal} title={''} >

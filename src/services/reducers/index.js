@@ -55,8 +55,11 @@ const reducer = (state = initialState, action) => {
                         if (item.type === 'bun' && item._id === action.item._id) {
                             return {...item, count: ++item.count}
                         }
-                        else {
+                        else if (item.type === 'bun') {
                             return {...item, count: 0}
+                        }
+                        else {
+                            return {...item}
                         }
                     })}
                 }
@@ -76,7 +79,6 @@ const reducer = (state = initialState, action) => {
             const newArray = [...state.constructorItems]
             newArray.splice(action.dragIndex, 1)
             newArray.splice(action.hoverIndex, 0, action.dragItem)
-            console.log(newArray)
             return {...state, constructorItems: newArray}
         }
           default: {

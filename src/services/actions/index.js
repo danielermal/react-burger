@@ -21,6 +21,7 @@ export function getIngredients () {
             if (res.ok) {
               return res.json()
             }
+            return Promise.reject(res.status)
           })
           .then((data) => {
             dispatch({
@@ -45,6 +46,7 @@ export function getOrder (totalId) {
       if (res.ok) {
         return res.json()
       }
+      return Promise.reject(res.status)
     })
     .then((data) => {
       dispatch({
