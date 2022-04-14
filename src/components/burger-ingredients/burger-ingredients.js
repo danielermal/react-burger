@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import { Box } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredients from './burger-ingredients.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -9,11 +9,12 @@ import PropTypes from 'prop-types';
 import { cardPropTypes } from '../../utils/constants';
 import { Modal } from '../modal/modal';
 import { IngredientDetails } from '../ingredient-details/ingredient-details';
-import { UserContext } from '../../services/userContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDrag } from 'react-dnd';
 
 export const BurgerIngredients = () => {
 
-    const {data} = React.useContext(UserContext)
+    const {items} = useSelector(store => store.reducer)
     
     const [current, setCurrent] = React.useState('Булки')
 
@@ -22,18 +23,31 @@ export const BurgerIngredients = () => {
     const closeModal = () => {
       setState({...state, overlay: false})
     }
+
+    const handleScroll = (evt) => {
+        const scrollTop = evt.target.scrollTop
+        if (scrollTop <= 246) {
+            setCurrent('Булки')
+        }
+        else if (scrollTop <= 800) {
+            setCurrent('Соусы')
+        }
+        else {
+            setCurrent('Начинки')
+        }
+    }
   
     const openModalIngredient = React.useCallback ((item) => {
         setState({...state, overlay:true, ingridient: item})
       }, [])
 
-    const bun = []
+    const buns = []
     const main = []
     const sauce = []
 
-    data.forEach((ingredient) => {
+    items.forEach((ingredient) => {
         if (ingredient.type === "bun") {
-            bun.push(ingredient)
+            buns.push(ingredient)
         }
         else if (ingredient.type === "main") {
             main.push(ingredient)
@@ -44,6 +58,7 @@ export const BurgerIngredients = () => {
     })
   
     return (
+        <>
         <div>
             <h1 className={burgerIngredients.h1}>Соберите бургер</h1>
             <div className={`mt-5 ${burgerIngredients.tab}`}>
@@ -57,8 +72,8 @@ export const BurgerIngredients = () => {
                 Начинки
                 </Tab>
             </div>
-            <div className={burgerIngredients.menu}>
-                <CardContainer title='Булки' cards={bun} key='bun' openModal={openModalIngredient} />
+            <div className={burgerIngredients.menu} onScroll={handleScroll}>
+                <CardContainer title='Булки' cards={buns} key='bun' openModal={openModalIngredient} />
                 <CardContainer title='Соусы' cards={sauce} key='sauce' openModal={openModalIngredient}/>
                 <CardContainer title='Начинки' cards={main} key='main' openModal={openModalIngredient}/>
             </div>
@@ -66,6 +81,7 @@ export const BurgerIngredients = () => {
                 <IngredientDetails card={state.ingridient} />
             </Modal> }
         </div>
+        </>
     )
 }
 
@@ -85,20 +101,22 @@ const CardContainer = (props) => {
 
 const Card = ({card, openModal}) => {
 
-    const [state, setState] = React.useState({count: 0})
+    const [{ opacity }, ref] = useDrag({
+        type: 'items',
+        item: card,
+        collect: monitor => ({
+          opacity: monitor.isDragging() ? 0.5 : 1
+        })
+      })
 
     const handleClick = () => {
         openModal(card)
-        setState({
-            ...state,
-            count: state.count + 1
-        })
     }
 
     return (
-        <article className={burgerIngredients.card} onClick={handleClick} >
+        <article className={burgerIngredients.card} onClick={handleClick} ref={ref} style={{opacity}} >
             <img src={card.image} alt={`${card.name}`} className={burgerIngredients.image} />
-            {state.count > 0 && <Counter count={state.count} size="default" /> }
+            {card.count > 0 && <Counter count={card.count} size="default" /> }
             
             <p className={burgerIngredients.price}>
                 <span className='mr-2'>{card.price}</span>

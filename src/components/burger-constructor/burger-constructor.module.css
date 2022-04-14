@@ -11,6 +11,11 @@
     flex-direction: column;
     gap: 16px;
     justify-items: end;
+    min-height: 400px;
+}
+
+.burger_hover {
+    box-shadow: inset 0px -2px 0px #3C39EC;
 }
 
 .bun {
