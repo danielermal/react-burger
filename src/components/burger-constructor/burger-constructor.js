@@ -158,7 +158,8 @@ export const BurgerConstructor = () => {
 }
 
 ListItem.propTypes = {
-  item: cardPropTypes.isRequired
+  item: cardPropTypes.isRequired,
+  index: PropTypes.number.isRequired
 }
 
 Bun.propTypes = {

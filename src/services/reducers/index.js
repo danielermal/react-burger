@@ -42,7 +42,9 @@ const reducer = (state = initialState, action) => {
         }
         case GET_ORDER_SUCCESS: {
             return {
-                ...state, orderFailed: false, order: action.order, orderRequest: false
+                ...state, orderFailed: false, order: action.order, orderRequest: false, constructorItems: [], bun: {}, items: [...state.items].map((item) => {
+                    return {...item, count: 0}
+                })
             }
         }
         case GET_ORDER_FAILED: {
