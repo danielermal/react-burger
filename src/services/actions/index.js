@@ -61,3 +61,11 @@ export function getOrder (totalId) {
     })
   }
 }
+
+export const sortIngredients = (dragIndex, dropIndex) => {
+  return (dispatch, getState) => {
+    const sortableIngredients = getState().reducer.constructorItems
+    sortableIngredients.splice(dropIndex, 0, ...sortableIngredients.splice(dragIndex, 1));
+    dispatch({ type: CHANGE_ITEM, newArray: sortableIngredients });
+  }
+}
