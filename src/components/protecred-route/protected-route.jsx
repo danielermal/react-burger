@@ -1,27 +1,32 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import styles from '../../pages/styles.module.css'
+import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export const ProtectedRoute = ({children, anonymus = false}) => {
+export const ProtectedRoute = ({children, anonymus = false, reset = false}) => {
 
     const {isAuth, resetPasswordSuccess, getUserInfoRequest } = useSelector(
         (store) => store.routeReducer
     );
 
+    const location = useLocation()
+
+    const from = location.state?.from.pathname;
+
     if (getUserInfoRequest) {
-        return <>{'загрузка...'}</>
+        return <>{<span>Загрузка<span className={styles.loading}>...</span></span>}</>
     }
 
     if (anonymus && isAuth) {
-        return <Navigate to='/' />
+        return <Navigate to={from ? from : '/'} />
     }
 
     if (!anonymus && !isAuth) {
-        return <Navigate to='/login' />
+        return <Navigate to='/login' state={{from: location}} />
     }
 
-    if (anonymus && isAuth && resetPasswordSuccess) {
-        return <Navigate to='/reset-password' />
+    if (reset && !resetPasswordSuccess) {
+        return <Navigate to='/' />
     }
 
     return <>{children}</>

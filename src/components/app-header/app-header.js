@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Box } from "@ya.praktikum/react-developer-burger-ui-components";
 import appHeader from "./app-header.module.css";
 import { BurgerIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -8,9 +8,20 @@ import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom"
 
-export const AppHeader = ({modal}) => {
+export const AppHeader = ({background}) => {
   
   const {pathname} = useLocation()
+
+  const [modal, setModal] = React.useState(false)
+
+  React.useEffect(() => {
+    if (pathname.includes('ingredients') && !background) {
+      setModal(true)
+    }
+    else {
+      setModal(false)
+    }
+  }, [pathname])
 
   return (
     <header className={modal ? `p-4 ${appHeader.header} ${appHeader.header_modal}` : `p-4 ${appHeader.header}`}>

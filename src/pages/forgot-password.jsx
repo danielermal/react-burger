@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
-import { AppHeader } from "../components/app-header/app-header";
 import styles from "./styles.module.css";
 import { Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { resetPassword } from "../services/actions/router";
-import { RESET_PASSWORD_DONE } from "../services/actions/router";
 
 export const Forgot = () => {
 
@@ -28,18 +26,15 @@ export const Forgot = () => {
         dispatch(resetPassword(email))
     }
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (resetPasswordSuccess) {
             navigate('/reset-password', {replace: true})
-            dispatch({
-                type: RESET_PASSWORD_DONE
-            })
         }
     }, [resetPasswordSuccess])
 
+
     return (
         <>
-        <AppHeader />
         <main>
         <section className={styles.login}>
             <form name="register" className={styles.form} onSubmit={reset}>

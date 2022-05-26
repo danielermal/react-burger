@@ -6,12 +6,11 @@ import {
   updateToken, logoutRequest, newPasswordRequest, updateUserInfoRequest
 } from "../Api";
 
-import { setCookie, deleteCookie } from "../../utils/constants";
+import { setCookie, deleteCookie, checkResponse } from "../../utils/constants";
 
 export const RESET_PASSWORD_REQUEST = "RESET_PASSWOR_REQUEST";
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWOR_SUCCESS";
 export const RESET_PASSWORD_FAILED = "RESET_PASSWOR_FAILED";
-export const RESET_PASSWORD_DONE = "RESET_PASSWOR_DONE";
 export const NEW_PASSWORD_REQUEST = "NEW_PASSWOR_REQUEST";
 export const NEW_PASSWORD_SUCCESS = "NEW_PASSWOR_SUCCESS";
 export const NEW_PASSWORD_FAILED = "NEW_PASSWOR_FAILED";
@@ -37,12 +36,7 @@ export function resetPassword(email) {
       type: RESET_PASSWORD_REQUEST,
     });
     resetPasswordRequest(email)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
+      .then(checkResponse)
       .then((data) => {
         dispatch({
           type: RESET_PASSWORD_SUCCESS,
@@ -62,12 +56,7 @@ export function newPassword(arg) {
       type: NEW_PASSWORD_REQUEST,
     });
     newPasswordRequest(arg)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
+      .then(checkResponse)
       .then((data) => {
         dispatch({
           type: NEW_PASSWORD_SUCCESS,
@@ -87,12 +76,7 @@ export function registration(arg) {
       type: REGISTRATION_REQUEST,
     });
     registrationRequest(arg)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
+      .then(checkResponse)
       .then((data) => {
         dispatch({
           type: REGISTRATION_SUCCESS,
@@ -113,12 +97,7 @@ export function authorization(arg) {
       type: AUTHORIZATION_REQUEST,
     });
     authorizationRequest(arg)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
+      .then(checkResponse)
       .then((data) => {
         let accessToken = data.accessToken.split('Bearer ')[1]
         setCookie('accessToken', accessToken)
@@ -142,12 +121,7 @@ export function getUserInfo() {
       type: GET_USER_INFO_REQUEST,
     });
     getUserInfoRequest()
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
+      .then(checkResponse)
       .then((data) => {
         console.log(data);
         dispatch({
@@ -160,23 +134,13 @@ export function getUserInfo() {
           type: GET_USER_INFO_FAILED,
         });
         updateToken()
-          .then((res) => {
-            if (res.ok) {
-              return res.json();
-            }
-            return Promise.reject(res.status);
-          })
+          .then(checkResponse)
           .then((data) => {
             let accessToken = data.accessToken.split('Bearer ')[1]
             setCookie('accessToken', accessToken)
             localStorage.setItem("refreshToken", data.refreshToken);
             getUserInfoRequest()
-              .then((res) => {
-                if (res.ok) {
-                  return res.json();
-                }
-                return Promise.reject(res.status);
-              })
+              .then(checkResponse)
               .then((data) => {
                 dispatch({
                   type: GET_USER_INFO_SUCCESS,
@@ -202,12 +166,7 @@ export function updateUserInfo(email, name) {
       type: UPDATE_USER_INFO_REQUEST,
     });
     updateUserInfoRequest(email, name)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
+      .then(checkResponse)
       .then((data) => {
         dispatch({
           type: UPDATE_USER_INFO_SUCCESS,
@@ -228,12 +187,7 @@ export function logout() {
       type: LOGOUT_REQUEST,
     });
     logoutRequest()
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
+      .then(checkResponse)
       .then((data) => {
         deleteCookie('accessToken')
         localStorage.removeItem("refreshToken");

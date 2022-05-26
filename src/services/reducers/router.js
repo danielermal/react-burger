@@ -1,4 +1,4 @@
-import { RESET_PASSWORD_REQUEST, RESET_PASSWORD_FAILED, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_DONE, REGISTRATION_REQUEST, REGISTRATION_SUCCESS, REGISTRATION_FAILED, AUTHORIZATION_REQUEST, AUTHORIZATION_SUCCESS, AUTHORIZATION_FAILED, GET_USER_INFO_REQUEST, GET_USER_INFO_SUCCESS, GET_USER_INFO_FAILED, LOGOUT_FAILED, LOGOUT_SUCCESS, LOGOUT_REQUEST, NEW_PASSWORD_FAILED, NEW_PASSWORD_SUCCESS, NEW_PASSWORD_REQUEST, UPDATE_USER_INFO_FAILED, UPDATE_USER_INFO_REQUEST, UPDATE_USER_INFO_SUCCESS } from "../actions/router";
+import { RESET_PASSWORD_REQUEST, RESET_PASSWORD_FAILED, RESET_PASSWORD_SUCCESS, REGISTRATION_REQUEST, REGISTRATION_SUCCESS, REGISTRATION_FAILED, AUTHORIZATION_REQUEST, AUTHORIZATION_SUCCESS, AUTHORIZATION_FAILED, GET_USER_INFO_REQUEST, GET_USER_INFO_SUCCESS, GET_USER_INFO_FAILED, LOGOUT_FAILED, LOGOUT_SUCCESS, LOGOUT_REQUEST, NEW_PASSWORD_FAILED, NEW_PASSWORD_SUCCESS, NEW_PASSWORD_REQUEST, UPDATE_USER_INFO_FAILED, UPDATE_USER_INFO_REQUEST, UPDATE_USER_INFO_SUCCESS } from "../actions/router";
 
 const initialState = {
     resetPasswordSuccess: false,
@@ -56,7 +56,8 @@ export const routeReducer = (state = initialState, action) => {
         case NEW_PASSWORD_SUCCESS: {
             return {...state,
             newPasswordRequest: false,
-            newPasswordSuccess: true
+            newPasswordSuccess: true,
+            resetPasswordSuccess: false
             }
         }
         case NEW_PASSWORD_FAILED: {
@@ -64,12 +65,6 @@ export const routeReducer = (state = initialState, action) => {
             newPasswordRequest: false,
             newPasswordFailed: true
             }
-        }
-        case RESET_PASSWORD_DONE: {
-            return {...state,
-                resetPasswordSuccess: false,
-                resetPasswordRequest: false,
-                resetPasswordFailed: false}
         }
         case REGISTRATION_REQUEST: {
             return {...state, registrationRequest: true}

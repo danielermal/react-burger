@@ -2,6 +2,13 @@ import PropTypes from 'prop-types';
 
 export const URL = 'https://norma.nomoreparties.space/api/'
 
+export function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(res.status);
+}
+
 export const cardPropTypes = PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,

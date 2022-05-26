@@ -1,20 +1,15 @@
 import React from "react";
-import { AppHeader } from "../components/app-header/app-header";
 import styles from "./styles.module.css";
 import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { authorization } from "../services/actions/router";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Login = () => {
 
     const dispatch = useDispatch()
-
-    const navigate = useNavigate()
-
-    const {authorizationSuccess} = useSelector(store => store.routeReducer)
 
     const [value, setValue] = React.useState({
         email: '',
@@ -29,15 +24,8 @@ export const Login = () => {
         dispatch(authorization(value))
     }
 
-    React.useEffect(() => {
-        if (authorizationSuccess) {
-            navigate('/')
-        }
-    }, [authorizationSuccess])
-
     return (
         <>
-        <AppHeader />
         <main>
         <section className={styles.login}>
             <form name="login" className={styles.form} onSubmit={loginHandler}>

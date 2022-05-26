@@ -90,6 +90,7 @@ h1 {
     margin: 0;
     height: 64px;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .profile_form {
@@ -115,3 +116,36 @@ h1 {
     display: flex;
 }
 
+.loading {
+    animation: loading 1s infinite;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.section_not_found {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.h1_not_found {
+    margin: 100px auto 80px;
+}
+
+.img_not_found {
+    max-width: 600px;
+    max-height: 500px;
+    margin: 0 auto 40px;
+    object-fit: cover;
+    box-shadow: 2px 4px 10px #000;;
+}
+
+@keyframes loading {
+    from {
+      width: 0px;
+    }
+    to {
+      width: 25px;
+    }
+  }

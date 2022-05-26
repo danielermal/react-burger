@@ -1,5 +1,6 @@
 import React from "react"; // импорт библиотеки
 import ReactDOM from "react-dom";
+import styles from '../../pages/styles.module.css'
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Index } from "../../pages";
 import { Login } from "../../pages/login";
@@ -14,6 +15,7 @@ import { ProtectedRoute } from "../protecred-route/protected-route";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { Modal } from "../modal/modal";
 import { AppHeader } from "../app-header/app-header";
+import { NotFound } from "../../pages/not-found";
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -30,15 +32,23 @@ export const App = () => {
 
   React.useEffect(() => {
     document.title = "react burger";
-    dispatch(getIngredients());
     dispatch(getUserInfo());
   }, [dispatch, isAuth]);
 
+  React.useEffect(() => {
+    if (!items.length) {
+      dispatch(getIngredients())
+    }
+  }, [dispatch, items])
+
+
   return (
     <>
-      {itemsRequest && "Загрузка..."}
+      {itemsRequest && <span>Загрузка<span className={styles.loading}>...</span></span>}
       {itemsFailed && "Произошла ошибка"}
       {!itemsRequest && !itemsFailed && items.length && (
+        <>
+        <AppHeader background={background} />
         <Routes location={background || location}>
           <Route path="/" element={<Index />} />
           <Route
@@ -68,7 +78,7 @@ export const App = () => {
           <Route
             path="/reset-password"
             element={
-              <ProtectedRoute anonymus={true}>
+              <ProtectedRoute anonymus={true} reset={true}>
                 <Reset />
               </ProtectedRoute>
             }
@@ -85,16 +95,17 @@ export const App = () => {
             path="/ingredients/:id"
             element={
               <>
-              <AppHeader modal={true} />
               <Modal onClose={closeModal} black={true} title={"Детали ингредиента"}>
                 <IngredientDetails />
               </Modal>
               </>
             }
           />
+          <Route path="*" element={<NotFound/>} />
         </Routes>
+        </>
       )}
-      {background && (
+      {background && items.length && (
         <Routes>
           <Route
             path="/ingredients/:id"

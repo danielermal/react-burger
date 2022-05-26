@@ -11,11 +11,10 @@ import { Modal } from "../modal/modal";
 import { OrderDetails } from "../order-details/order-details";
 import { Typography } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrder, sortIngredients } from "../../services/actions";
+import { getOrder, sortIngredients, addIngredients } from "../../services/actions";
 import { useDrag } from "react-dnd";
 import { useDrop } from "react-dnd";
-import { ADD_ITEM, DELETE_ITEM, CHANGE_ITEM } from "../../services/actions";
-import { v4 as uuidv4 } from "uuid";
+import { DELETE_ITEM } from "../../services/actions";
 import { useNavigate } from "react-router-dom";
 
 const Bun = ({ bun, type, position }) => {
@@ -106,10 +105,7 @@ export const BurgerConstructor = () => {
   });
 
   const addItem = (item) => {
-    dispatch({
-      type: ADD_ITEM,
-      item: item,
-    });
+    dispatch(addIngredients(item));
   };
 
   const closeModal = () => {
@@ -143,7 +139,7 @@ export const BurgerConstructor = () => {
         {bun.price && <Bun bun={bun} type="top" position="(верх)" />}
         <div className={burgerConstructor.ingridients}>
           {constructorItems.map((item, index) => (
-            <ListItem key={uuidv4()} item={item} index={index} id={uuidv4()} />
+            <ListItem key={item.uuid} item={item} index={index} id={item.uuid} />
           ))}
         </div>
         {bun.price && <Bun bun={bun} type="bottom" position="(низ)" />}
@@ -167,7 +163,7 @@ export const BurgerConstructor = () => {
         </Button>
         {state.overlay && (
           <Modal onClose={closeModal} title={""}>
-            {orderRequest && "Загрузка..."}
+            {orderRequest && <span>Загрузка<span className={burgerConstructor.loading}>...</span></span>}
             {orderFailed && "Произошла ошибка"}
             {!orderRequest && !orderFailed && <OrderDetails number={order} />}
           </Modal>
