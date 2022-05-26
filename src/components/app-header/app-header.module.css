@@ -49,6 +49,7 @@
 .logo {
     margin: 0 auto;
     justify-self: center;
+    cursor: pointer;
 }
 
 .div {

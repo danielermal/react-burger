@@ -6,29 +6,37 @@ import { ListIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom";
 
-export const AppHeader = ({background}) => {
-  
-  const {pathname} = useLocation()
+export const AppHeader = ({ background }) => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [modal, setModal] = React.useState(false);
 
-  const [modal, setModal] = React.useState(false)
+  const toMainPage = () => {
+    navigate("/", { replace: true });
+  };
 
   React.useEffect(() => {
-    if (pathname.includes('ingredients') && !background) {
-      setModal(true)
+    if (pathname.includes("ingredients") && !background) {
+      setModal(true);
+    } else {
+      setModal(false);
     }
-    else {
-      setModal(false)
-    }
-  }, [pathname])
+  }, [pathname]);
 
   return (
-    <header className={modal ? `p-4 ${appHeader.header} ${appHeader.header_modal}` : `p-4 ${appHeader.header}`}>
+    <header
+      className={
+        modal
+          ? `p-4 ${appHeader.header} ${appHeader.header_modal}`
+          : `p-4 ${appHeader.header}`
+      }
+    >
       <nav className={appHeader.nav}>
         <div className={appHeader.div}>
           <NavLink
-            to='/'
+            to="/"
             className={`${appHeader.button} p-5 p-4 mr-2`}
             style={({ isActive }) => {
               return {
@@ -36,21 +44,20 @@ export const AppHeader = ({background}) => {
               };
             }}
           >
-            <BurgerIcon type={pathname === '/' ? 'primary' : 'secondary'} />
+            <BurgerIcon type={pathname === "/" ? "primary" : "secondary"} />
             <span className="ml-2">Конструктор</span>
           </NavLink>
-          <button
-            className={`${appHeader.button} p-5 p-4`}
-          >
+          <button className={`${appHeader.button} p-5 p-4`}>
             <ListIcon type="secondary" />
             <span className="ml-2">Лента заказов</span>
           </button>
         </div>
-
-        <Logo className={appHeader.logo} />
+        <div className={appHeader.logo} onClick={toMainPage}>
+          <Logo />
+        </div>
 
         <NavLink
-          to='/profile'
+          to="/profile"
           className={`${appHeader.button} ${appHeader.button_last}`}
           style={({ isActive }) => {
             return {
@@ -58,7 +65,9 @@ export const AppHeader = ({background}) => {
             };
           }}
         >
-          <ProfileIcon type={pathname === '/profile' ? 'primary' : 'secondary'} />
+          <ProfileIcon
+            type={pathname === "/profile" ? "primary" : "secondary"}
+          />
           <span className="ml-2">Личный кабинет</span>
         </NavLink>
       </nav>
