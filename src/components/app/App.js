@@ -95,7 +95,7 @@ export const App = () => {
             path="/ingredients/:id"
             element={
               <>
-              <Modal onClose={closeModal} black={true} title={"Детали ингредиента"}>
+              <Modal black={true} title={"Детали ингредиента"}>
                 <IngredientDetails />
               </Modal>
               </>

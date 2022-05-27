@@ -9,7 +9,8 @@ import { Typography } from "@ya.praktikum/react-developer-burger-ui-components";
 const modalRoot = document.querySelector("#root");
 
 export const Modal = (props) => {
-  const closeModal = props.onClose;
+
+  const closeModal = props.onClose
 
   React.useEffect(() => {
     const closeByEsc = (evt) => {
@@ -29,7 +30,6 @@ export const Modal = (props) => {
     <ModalOverlay close={closeModal}>
       <div
         className={modal.container}
-        style={{ background: props.black ? "#000" : "" }}
         onClick={(e) => e.stopPropagation()}
       >
         {props.title ? <h1 className={modal.title}>{props.title}</h1> : <></>}
@@ -48,7 +48,7 @@ export const Modal = (props) => {
 };
 
 Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.element])
     .isRequired,
   title: PropTypes.string.isRequired,

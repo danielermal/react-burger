@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 export const ModalOverlay = (props) => {
 
     return (
-      <div className={`${modal.overlay} ${modal.overlay_active}`} onClick={props.close}>
+      <div className={props.close ? modal.overlay : `${modal.overlay} ${modal.overlay_black}`} onClick={props.close ? props.close : null}>
         {props.children}
       </div>
     );
@@ -15,5 +15,5 @@ export const ModalOverlay = (props) => {
 
 ModalOverlay.propTypes = {
   children: PropTypes.element.isRequired,
-  close: PropTypes.func.isRequired
+  close: PropTypes.func
 }
