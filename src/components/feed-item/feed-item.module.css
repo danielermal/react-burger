@@ -1,0 +1,157 @@
+.item {
+    width: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+    background: #1C1C21;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 40px;
+    list-style-type: none;
+    margin: 0;
+}
+
+.in_order {
+    padding: 0;
+    row-gap: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.numbers {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.number {
+    margin: 0;
+    font-family: 'Iceland';
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 24px;
+}
+
+.number_order {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.data {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
+    color: #8585AD;
+}
+
+.name {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    margin: 0;
+}
+
+.name_order {
+    margin: 40px 0 12px;
+}
+
+.done {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #00CCCC;
+    margin: 12px 0 60px;
+}
+
+.about_order {
+    margin: 0 0 24px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+}
+
+.ingredients {
+    display: flex;
+    column-gap: 24px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price_container {
+    display: flex;
+    align-items: center;
+    column-gap: 9px;
+}
+
+.price {
+    font-family: 'Iceland';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 24px;
+    margin: 0;
+}
+
+.icons {
+    width: 100%;
+    display: flex;
+}
+
+.icons_order {
+    width: 100%;
+    margin: 0 0 40px;
+    row-gap: 16px;
+}
+
+.icon_container {
+    width: 48px;
+    height: 64px;
+    position: relative;
+    overflow: visible;
+}
+
+.icon_container_order {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    column-gap: 16px;
+    justify-content: space-between;
+}
+
+.icon {
+    width: 64px;
+    height: 64px;
+    background: #131316;
+    border-radius: 100px;
+    border: 2px solid #801AB2 ;
+    box-sizing: border-box;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.icon_order {
+    width: 64px;
+    height: 64px;
+    border-radius: 100px;
+    border: 2px solid #801AB2 ;
+    object-fit: cover;
+    object-position: center;
+}
+
+.icon_name {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 auto 0 0;
+}
+
+.in_profile {
+    margin-top: -16px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+}

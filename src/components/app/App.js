@@ -16,6 +16,10 @@ import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { Modal } from "../modal/modal";
 import { AppHeader } from "../app-header/app-header";
 import { NotFound } from "../../pages/not-found";
+import { Feed } from "../../pages/feed";
+import { ProfileOrders } from "../../pages/orders";
+import { Order } from "../../pages/order";
+import { WS_CONNECTION_START } from "../../services/actions/wsActions";
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -29,6 +33,15 @@ export const App = () => {
   const { items, itemsRequest, itemsFailed } = useSelector(
     (store) => store.reducer
   );
+
+  const messages = useSelector(store => store.wsReducer)
+
+  const ws = new WebSocket('wss://norma.nomoreparties.space/orders/all')
+  ws.onerror = event => console.log(event)
+  
+  React.useEffect(() => {
+    dispatch({type: WS_CONNECTION_START})
+  }, [])
 
   React.useEffect(() => {
     document.title = "react burger";
@@ -89,8 +102,10 @@ export const App = () => {
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
-            }
-          />
+            }>
+              <Route path="orders" element={<ProfileOrders />} />
+          </Route>
+          <Route path="/order" element={<Order />} />
           <Route
             path="/ingredients/:id"
             element={
@@ -101,6 +116,7 @@ export const App = () => {
               </>
             }
           />
+          <Route path="/feed" element={<Feed />} />
           <Route path="*" element={<NotFound/>} />
         </Routes>
         </>

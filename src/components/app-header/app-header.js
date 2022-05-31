@@ -47,10 +47,15 @@ export const AppHeader = ({ background }) => {
             <BurgerIcon type={pathname === "/" ? "primary" : "secondary"} />
             <span className="ml-2">Конструктор</span>
           </NavLink>
-          <button className={`${appHeader.button} p-5 p-4`}>
-            <ListIcon type="secondary" />
+          <NavLink to='/feed' className={`${appHeader.button} p-5 p-4`}
+          style={({ isActive }) => {
+            return {
+              color: isActive ? "#F2F2F3" : "",
+            };
+          }}>
+            <ListIcon type={pathname === "/feed" ? "primary" : "secondary"} />
             <span className="ml-2">Лента заказов</span>
-          </button>
+          </NavLink>
         </div>
         <div className={appHeader.logo} onClick={toMainPage}>
           <Logo />

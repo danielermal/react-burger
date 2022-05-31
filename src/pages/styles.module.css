@@ -67,7 +67,7 @@ h1 {
 
 .profile_content {
     display: grid;
-    grid-template-columns: 320px 480px;
+    grid-template-columns: 320px 1fr;
     column-gap: 60px;
     margin: 120px 0 0;
 }
@@ -140,6 +140,54 @@ h1 {
     object-fit: cover;
     box-shadow: 2px 4px 10px #000;;
 }
+
+.feed {
+    margin: 20px auto 0;
+    grid-column-gap: 60px;
+}
+
+.feed_section {
+    max-width: 1240px;
+    margin: 40px auto 0;
+}
+
+.feed_h1 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 40px;
+    margin: 0;
+    text-align: left;
+}
+
+.feed_list {
+    width: 100%;
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    row-gap: 16px;
+    list-style-type: none;
+    max-height: 80vh;
+    overflow-y: scroll;
+    padding-right: 8px;
+}
+
+.feed_list::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .feed_list::-webkit-scrollbar-track {
+    background: #2f2f37;
+    margin-bottom: 60px;
+  }
+  
+  .feed_list::-webkit-scrollbar-thumb {
+    background: #8585ad;
+  }
+
+  .order {
+      margin: 122px auto 50px;
+      max-width: 640px;
+  }
 
 @keyframes loading {
     from {
