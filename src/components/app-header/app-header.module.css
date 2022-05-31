@@ -7,6 +7,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+.header_modal {
+    margin: 0 auto;
+    z-index: 3;
 }
 
 .nav {
@@ -29,23 +35,21 @@
     border: none;
     background-color: rgba(0, 0, 0, 0);
     font-family: "JetBrains Mono", Arial, sans-serif;
-    color: #F2F2F3;
+    color: #8585AD;
     margin: 0;
     cursor: pointer;
     transition: opacity .2s linear;
+    text-decoration: none;
 }
 
 .button:hover {
     opacity: 0.5;
 }
 
-.button_purple {
-    color: #8585AD;
-}
-
 .logo {
     margin: 0 auto;
     justify-self: center;
+    cursor: pointer;
 }
 
 .div {

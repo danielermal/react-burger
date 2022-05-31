@@ -9,8 +9,9 @@ import PropTypes from 'prop-types';
 import { cardPropTypes } from '../../utils/constants';
 import { Modal } from '../modal/modal';
 import { IngredientDetails } from '../ingredient-details/ingredient-details';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
+import { useLocation, Link } from 'react-router-dom';
 
 export const BurgerIngredients = () => {
 
@@ -24,8 +25,8 @@ export const BurgerIngredients = () => {
       setState({...state, overlay: false})
     }
 
-    const handleScroll = (evt) => {
-        const scrollTop = evt.target.scrollTop
+    const handleScroll = () => {
+        const scrollTop = ref.current.scrollTop
         if (scrollTop <= 246) {
             setCurrent('Булки')
         }
@@ -36,10 +37,24 @@ export const BurgerIngredients = () => {
             setCurrent('Начинки')
         }
     }
-  
-    const openModalIngredient = React.useCallback ((item) => {
-        setState({...state, overlay:true, ingridient: item})
-      }, [])
+
+    const handleTab = (tab) => {
+            if (tab === 'Булки') {
+                setCurrent(tab)
+                ref.current.scrollTop = 0
+            }
+            else if (tab === 'Соусы') {
+                setCurrent(tab)
+                ref.current.scrollTop = 248
+            }
+            else {
+                setCurrent(tab)
+                ref.current.scrollTop = 802
+            }
+            
+    }
+
+    const ref = React.useRef(null)
 
     const buns = []
     const main = []
@@ -62,20 +77,20 @@ export const BurgerIngredients = () => {
         <div>
             <h1 className={burgerIngredients.h1}>Соберите бургер</h1>
             <div className={`mt-5 ${burgerIngredients.tab}`}>
-                <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
+                <Tab value="Булки" active={current === 'Булки'} onClick={() => handleTab('Булки')}>
                 Булки
                 </Tab>
-                <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
+                <Tab value="Соусы" active={current === 'Соусы'} onClick={() => handleTab('Соусы')}>
                 Соусы
                 </Tab>
-                <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
+                <Tab value="Начинки" active={current === 'Начинки'} onClick={() => handleTab('Начинки')}>
                 Начинки
                 </Tab>
             </div>
-            <div className={burgerIngredients.menu} onScroll={handleScroll}>
-                <CardContainer title='Булки' cards={buns} key='bun' openModal={openModalIngredient} />
-                <CardContainer title='Соусы' cards={sauce} key='sauce' openModal={openModalIngredient}/>
-                <CardContainer title='Начинки' cards={main} key='main' openModal={openModalIngredient}/>
+            <div className={burgerIngredients.menu} onScroll={handleScroll} ref={ref}>
+                <CardContainer title='Булки' cards={buns} key='bun' />
+                <CardContainer title='Соусы' cards={sauce} key='sauce'/>
+                <CardContainer title='Начинки' cards={main} key='main'/>
             </div>
             {state.overlay && <Modal onClose={closeModal} title={'Детали заказа'} >
                 <IngredientDetails card={state.ingridient} />
@@ -92,14 +107,14 @@ const CardContainer = (props) => {
                 <h2 className={burgerIngredients.title}>{props.title}</h2>
                 <div className={burgerIngredients.container}>
                     {cards.map((card) => (
-                    <Card card={card} openModal={props.openModal} key={card._id} />
+                    <Card card={card} key={card._id} />
                     ))}
                 </div>
              </article>
     )
 }
 
-const Card = ({card, openModal}) => {
+const Card = ({card}) => {
 
     const [{ opacity }, ref] = useDrag({
         type: 'items',
@@ -109,12 +124,10 @@ const Card = ({card, openModal}) => {
         })
       })
 
-    const handleClick = () => {
-        openModal(card)
-    }
+    const location = useLocation()
 
     return (
-        <article className={burgerIngredients.card} onClick={handleClick} ref={ref} style={{opacity}} >
+        <Link to={`ingredients/${card._id}`} state={{background: location}} className={burgerIngredients.card} ref={ref} style={{opacity}} >
             <img src={card.image} alt={`${card.name}`} className={burgerIngredients.image} />
             {card.count > 0 && <Counter count={card.count} size="default" /> }
             
@@ -123,17 +136,15 @@ const Card = ({card, openModal}) => {
                  <CurrencyIcon type="primary" />
              </p>
              <h3 className={burgerIngredients.name}>{card.name}</h3>
-        </article>
+        </Link>
     )
 }
 
   CardContainer.propTypes = {
     cards: PropTypes.arrayOf(cardPropTypes).isRequired,
-    title: PropTypes.string.isRequired,
-    openModal: PropTypes.func.isRequired
+    title: PropTypes.string.isRequired
   }
 
   Card.propTypes = {
-    card: cardPropTypes.isRequired,
-    openModal: PropTypes.func.isRequired
+    card: cardPropTypes.isRequired
   }

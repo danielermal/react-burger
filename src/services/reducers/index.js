@@ -1,5 +1,6 @@
 import { DELETE_ITEM, ADD_ITEM, GET_ITEMS_REQUEST, GET_ITEMS_SUCCESS, GET_ITEMS_FAILED, GET_ORDER_REQUEST, GET_ORDER_SUCCESS, GET_ORDER_FAILED, CHANGE_ITEM } from '../actions/index'
 import { combineReducers } from 'redux';
+import { routeReducer } from './router';
 
 const initialState = {
     items: [],
@@ -78,10 +79,7 @@ const reducer = (state = initialState, action) => {
             return {...state, items: [...state.items].map(item => item._id === action.item._id ? {...item, count: --item.count} : item), constructorItems: state.constructorItems.filter(item => item !== deletedItem)}
         }
         case CHANGE_ITEM: {
-            const newArray = [...state.constructorItems]
-            newArray.splice(action.dragIndex, 1)
-            newArray.splice(action.hoverIndex, 0, action.dragItem)
-            return {...state, constructorItems: newArray}
+            return {...state, constructorItems: action.newArray}
         }
           default: {
             return state;
@@ -89,4 +87,4 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-export const rootReducer = combineReducers({reducer})
+export const rootReducer = combineReducers({reducer, routeReducer})
