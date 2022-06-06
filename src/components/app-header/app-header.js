@@ -18,7 +18,7 @@ export const AppHeader = ({ background }) => {
   };
 
   React.useEffect(() => {
-    if (pathname.includes("ingredients") && !background) {
+    if ((pathname.includes("ingredients") && !background) || (pathname.includes("orders/") && !background) || (pathname.includes("feed/") && !background)) {
       setModal(true);
     } else {
       setModal(false);

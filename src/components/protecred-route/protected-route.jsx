@@ -11,7 +11,7 @@ export const ProtectedRoute = ({children, anonymus = false, reset = false}) => {
 
     const location = useLocation()
 
-    const from = location.state?.from.pathname;
+    const from = location.state?.from?.pathname;
 
     if (getUserInfoRequest) {
         return <>{<span>Загрузка<span className={styles.loading}>...</span></span>}</>

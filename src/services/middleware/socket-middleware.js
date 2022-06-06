@@ -1,23 +1,21 @@
-import { getCookie } from "../../utils/constants"
+import { getOrders } from "../actions/wsActions"
 
-export const socketMiddleware = (wsUrl, wsActions) => {
+export const socketMiddleware = (wsUrl, wsActions, reverse=false) => {
     return store => {
         let socket = null
 
         return next => action => {
-            const {dispatch, getState} = store
+            const {dispatch} = store
             const { type, payload } = action;
             const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
-            const {isAuth} = getState().routeReducer
 
-            if (type === wsInit && isAuth) {
-                socket = new WebSocket(`${wsUrl}?token=${getCookie('accessToken')}`)
+            if (type === wsInit) {
+                socket = new WebSocket(wsUrl)
             }
 
             if (socket) {
                 socket.onopen = event => {
                     dispatch({ type: onOpen, payload: event });
-                    console.log('опен')
                   };
 
                   socket.onerror = event => {
@@ -28,7 +26,7 @@ export const socketMiddleware = (wsUrl, wsActions) => {
                   socket.onmessage = event => {
                     const { data } = event;
                     const parsedData = JSON.parse(data);
-                    dispatch({ type: onMessage, payload: parsedData });
+                    dispatch(getOrders(onMessage, parsedData, reverse));
                   };
 
                   socket.onclose = event => {

@@ -1,37 +1,66 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import {App} from './components/app/App';
-import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
-import { rootReducer } from './services/reducers/index.js'
-import { compose, createStore, applyMiddleware } from 'redux';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import { App } from "./components/app/App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import { rootReducer } from "./services/reducers/index.js";
+import { compose, createStore, applyMiddleware } from "redux";
 import { BrowserRouter } from "react-router-dom";
-import { socketMiddleware } from './services/middleware/socket-middleware';
-import { wsURL } from './utils/constants';
-import { WS_CONNECTION_CLOSED,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_GET_MESSAGE,
-  WS_SEND_MESSAGE } from './services/actions/wsActions';
-import thunk from 'redux-thunk';
+import { socketMiddleware } from "./services/middleware/socket-middleware";
+import { wsURL, getCookie } from "./utils/constants";
+import {
+  WS_ORDER_CONNECTION_CLOSED,
+  WS_ORDER_CONNECTION_ERROR,
+  WS_ORDER_CONNECTION_START,
+  WS_ORDER_CONNECTION_SUCCESS,
+  WS_ORDER_GET_MESSAGE,
+  WS_ORDER_SEND_MESSAGE,
+  WS_FEED_CONNECTION_CLOSED,
+  WS_FEED_CONNECTION_ERROR,
+  WS_FEED_CONNECTION_START,
+  WS_FEED_CONNECTION_SUCCESS,
+  WS_FEED_GET_MESSAGE,
+  WS_FEED_SEND_MESSAGE,
+} from "./services/actions/wsActions";
+import thunk from "redux-thunk";
 
-const wsActions = {
-  wsInit: WS_CONNECTION_START,
-  wsSendMessage: WS_SEND_MESSAGE,
-  onOpen: WS_CONNECTION_SUCCESS,
-  onClose: WS_CONNECTION_CLOSED,
-  onError: WS_CONNECTION_ERROR,
-  onMessage: WS_GET_MESSAGE
+const wsActionsOrders = {
+  wsInit: WS_ORDER_CONNECTION_START,
+  wsSendMessage: WS_ORDER_SEND_MESSAGE,
+  onOpen: WS_ORDER_CONNECTION_SUCCESS,
+  onClose: WS_ORDER_CONNECTION_CLOSED,
+  onError: WS_ORDER_CONNECTION_ERROR,
+  onMessage: WS_ORDER_GET_MESSAGE,
 };
 
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose; 
+const wsActionsFeed = {
+  wsInit: WS_FEED_CONNECTION_START,
+  wsSendMessage: WS_FEED_SEND_MESSAGE,
+  onOpen: WS_FEED_CONNECTION_SUCCESS,
+  onClose: WS_FEED_CONNECTION_CLOSED,
+  onError: WS_FEED_CONNECTION_ERROR,
+  onMessage: WS_FEED_GET_MESSAGE,
+}
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsURL, wsActions)));
+const composeEnhancers =
+  typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    : compose;
+
+const enhancer = composeEnhancers(
+  applyMiddleware(
+    thunk,
+    socketMiddleware(
+      `${wsURL}?token=${getCookie("accessToken")}`,
+      wsActionsOrders, true
+    ),
+    socketMiddleware(
+      `${wsURL}/all`,
+      wsActionsFeed
+    )
+  )
+);
 
 const store = createStore(rootReducer, enhancer);
 
@@ -41,7 +70,7 @@ ReactDOM.render(
       <App />
     </BrowserRouter>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,6 +1,6 @@
 import React from "react"; // импорт библиотеки
 import ReactDOM from "react-dom";
-import styles from '../../pages/styles.module.css'
+import styles from "../../pages/styles.module.css";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Index } from "../../pages";
 import { Login } from "../../pages/login";
@@ -19,29 +19,27 @@ import { NotFound } from "../../pages/not-found";
 import { Feed } from "../../pages/feed";
 import { ProfileOrders } from "../../pages/orders";
 import { Order } from "../../pages/order";
-import { WS_CONNECTION_START } from "../../services/actions/wsActions";
+import { WS_ORDER_CONNECTION_START, WS_FEED_CONNECTION_START } from "../../services/actions/wsActions";
 
 export const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const background = location.state?.background;
+  const backgroundOrder = location.state?.backgroundOrder;
+  const backgroundFeed = location.state?.backgroundFeed
   const navigate = useNavigate();
-
   const closeModal = React.useCallback(() => navigate(-1), [navigate]);
-
   const { isAuth } = useSelector((store) => store.routeReducer);
   const { items, itemsRequest, itemsFailed } = useSelector(
     (store) => store.reducer
   );
-
-  const messages = useSelector(store => store.wsReducer)
-
-  const ws = new WebSocket('wss://norma.nomoreparties.space/orders/all')
-  ws.onerror = event => console.log(event)
-  
+  const profileOrders = useSelector((store) => store.wsReducer.ordersMessages.orders);
+  const {orders} = useSelector((store) => store.wsReducer.feedMessages)
   React.useEffect(() => {
-    dispatch({type: WS_CONNECTION_START})
-  }, [])
+    if (isAuth && items.length) {
+      dispatch({ type: WS_ORDER_CONNECTION_START });
+    }
+  }, [isAuth, items]);
 
   React.useEffect(() => {
     document.title = "react burger";
@@ -50,90 +48,153 @@ export const App = () => {
 
   React.useEffect(() => {
     if (!items.length) {
-      dispatch(getIngredients())
+      dispatch(getIngredients());
     }
-  }, [dispatch, items])
+  }, [dispatch, items]);
+
+  React.useEffect(() => {
+    if (items.length) {
+      dispatch({type: WS_FEED_CONNECTION_START})
+    }
+  }, [items])
 
 
   return (
     <>
-      {itemsRequest && <span>Загрузка<span className={styles.loading}>...</span></span>}
+      {itemsRequest ? (
+        <span>
+          Загрузка<span className={styles.loading}>...</span>
+        </span>
+      ) : <></>}
       {itemsFailed && "Произошла ошибка"}
-      {!itemsRequest && !itemsFailed && items.length && (
+      {items.length && orders && (
         <>
-        <AppHeader background={background} />
-        <Routes location={background || location}>
-          <Route path="/" element={<Index />} />
-          <Route
-            path="/login"
-            element={
-              <ProtectedRoute anonymus={true}>
-                <Login />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <ProtectedRoute anonymus={true}>
-                <Register />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <ProtectedRoute anonymus={true}>
-                <Forgot />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/reset-password"
-            element={
-              <ProtectedRoute anonymus={true} reset={true}>
-                <Reset />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }>
+          <AppHeader background={background || backgroundOrder || backgroundFeed} />
+          <Routes location={background || backgroundOrder || backgroundFeed}>
+            <Route path="/" element={<Index />} />
+            <Route
+              path="/login"
+              element={
+                <ProtectedRoute anonymus={true}>
+                  <Login />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <ProtectedRoute anonymus={true}>
+                  <Register />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <ProtectedRoute anonymus={true}>
+                  <Forgot />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reset-password"
+              element={
+                <ProtectedRoute anonymus={true} reset={true}>
+                  <Reset />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            >
+              {profileOrders && 
+              <>
               <Route path="orders" element={<ProfileOrders />} />
-          </Route>
-          <Route path="/order" element={<Order />} />
-          <Route
-            path="/ingredients/:id"
-            element={
-              <>
-              <Modal black={true} title={"Детали ингредиента"}>
-                <IngredientDetails />
-              </Modal>
+              <Route
+                path="orders/:id"
+                element={
+                  <Modal black={true} title={""}>
+                    <Order orders={profileOrders} />
+                  </Modal>
+                  
+                }
+              />
               </>
-            }
-          />
-          <Route path="/feed" element={<Feed />} />
-          <Route path="*" element={<NotFound/>} />
-        </Routes>
+              }
+              
+            </Route>
+            <Route
+              path="/ingredients/:id"
+              element={
+                <>
+                  <Modal black={true} title={"Детали ингредиента"}>
+                    <IngredientDetails />
+                  </Modal>
+                </>
+              }
+            />
+            <Route path="/feed" element={<Feed />} />
+            <Route
+              path="/feed/:id"
+              element={
+                <>
+                  <Modal black={true} title={""}>
+                    <Order orders={orders} />
+                  </Modal>
+                </>
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+
+          {background && (
+            <Routes>
+              <Route
+                path="/ingredients/:id"
+                element={
+                  <>
+                    <Modal onClose={closeModal} title={"Детали ингредиента"}>
+                      <IngredientDetails />
+                    </Modal>
+                  </>
+                }
+              />
+            </Routes>
+          )}
+
+          {backgroundFeed && (
+            <Routes>
+            <Route
+              path="/feed/:id"
+              element={
+                <>
+                  <Modal onClose={closeModal} title={""}>
+                    <Order orders={orders} />
+                  </Modal>
+                </>
+              }
+            />
+          </Routes>
+          )}
+
+          {backgroundOrder && profileOrders && (
+            <Routes>
+              <Route
+                path="/profile/orders/:id"
+                element={
+                  <Modal title={""} onClose={closeModal}>
+                    <Order orders={profileOrders} />
+                  </Modal>
+                }
+              />
+            </Routes>
+          )}
         </>
-      )}
-      {background && items.length && (
-        <Routes>
-          <Route
-            path="/ingredients/:id"
-            element={
-              <>
-                <Modal onClose={closeModal} title={"Детали ингредиента"}>
-                  <IngredientDetails />
-                </Modal>
-              </>
-            }
-          />
-        </Routes>
       )}
     </>
   );

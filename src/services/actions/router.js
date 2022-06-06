@@ -123,13 +123,13 @@ export function getUserInfo() {
     getUserInfoRequest()
       .then(checkResponse)
       .then((data) => {
-        console.log(data);
         dispatch({
           type: GET_USER_INFO_SUCCESS,
           data,
         });
       })
       .catch((err) => {
+        console.log(err);
         dispatch({
           type: GET_USER_INFO_FAILED,
         });
@@ -148,6 +148,7 @@ export function getUserInfo() {
                 });
               })
               .catch((err) => {
+                console.log(err);
                 dispatch({
                   type: GET_USER_INFO_FAILED,
                 });

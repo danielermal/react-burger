@@ -16,6 +16,11 @@
     padding: 0;
     row-gap: 0;
     background-color: rgba(0, 0, 0, 0);
+    min-width: 640px;
+}
+
+.done {
+    color: #00CCCC;
 }
 
 .numbers {
@@ -104,7 +109,25 @@
     width: 100%;
     margin: 0 0 40px;
     row-gap: 16px;
+    display: flex;
+    flex-direction: column;
+    max-height: 304px;
+    overflow-y: scroll;
+    padding-right: 24px;
 }
+
+.icons_order::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .icons_order::-webkit-scrollbar-track {
+    background: #2f2f37;
+  }
+  
+  .icons_order::-webkit-scrollbar-thumb {
+    background: #8585ad;
+  }
+
 
 .icon_container {
     width: 48px;
@@ -131,6 +154,9 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon_order {
@@ -151,6 +177,12 @@
 
 .in_profile {
     margin-top: -16px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.hidden {
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;

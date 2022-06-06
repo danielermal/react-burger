@@ -25,18 +25,18 @@ export const FeedItem = ({
               : `${feedItem.number} ${feedItem.number_order}`
           }
         >
-          123
+          {`#${data.number}`}
         </span>
-        {!order ? <span className={feedItem.data}>1234</span> : <></>}
+        {!order ? <span className={feedItem.data}>{data.createdAt}</span> : <></>}
       </li>
       <li>
         <p className={!order ? feedItem.name : `${feedItem.name_order}`}>
-          vcvcvc
+          {data.name}
         </p>
       </li>
       {profile ? (
         <li className={feedItem.in_profile}>
-          <span>создан</span>
+          {data.status === 'done' ? <span className={feedItem.done}>Выполнен</span> : 'Создан' }
         </li>
       ) : (
         <></>
@@ -60,7 +60,7 @@ export const FeedItem = ({
         </div>
         {!order ? (
           <span className={feedItem.price_container}>
-            <span className={feedItem.price}>432423</span>
+            <span className={feedItem.price}>{data.price}</span>
             <CurrencyIcon type="primary" />
           </span>
         ) : (
@@ -69,9 +69,9 @@ export const FeedItem = ({
       </li>
       {order ? 
       <li className={feedItem.numbers}>
-        <span className={feedItem.data}>1234</span>
+        <span className={feedItem.data}>{data.createdAt}</span>
         <span className={feedItem.price_container}>
-        <span className={feedItem.price}>4423</span>
+        <span className={feedItem.price}>{data.price}</span>
         <CurrencyIcon type="primary" />
       </span>
       </li>
@@ -80,33 +80,33 @@ export const FeedItem = ({
   );
 };
 
-export const FeedIcon = ({ z }) => {
+export const FeedIcon = ({z, icon, hiddenIngredients=false}) => {
   return (
-    <article className={feedItem.icon_container} style={{ zIndex: z }}>
+    <article className={feedItem.icon_container} style={{ zIndex: `${z}` }}>
       <div
         className={feedItem.icon}
         style={{
           backgroundImage:
-            "url(https://kartinkin.net/uploads/posts/2022-03/1648067648_1-kartinkin-net-p-grustnie-kotiki-kartinki-1.jpg)",
+            `url(${icon})`,
         }}
       >
-        <h3></h3>
+        {hiddenIngredients && <span className={feedItem.hidden}>{`+${hiddenIngredients}`}</span>}
       </div>
     </article>
   );
 };
 
-export const FeedIconOrder = () => {
+export const FeedIconOrder = ({data}) => {
   return (
     <article className={feedItem.icon_container_order}>
       <img
-        src="https://kartinkin.net/uploads/posts/2022-03/1648067648_1-kartinkin-net-p-grustnie-kotiki-kartinki-1.jpg"
-        alt=""
+        src={data.image}
+        alt={data.name}
         className={feedItem.icon_order}
       />
-      <h3 className={feedItem.icon_name}>булочка</h3>
+      <h3 className={feedItem.icon_name}>{data.name}</h3>
       <span className={feedItem.price_container}>
-        <span className={feedItem.price}>432423</span>
+        <span className={feedItem.price}>{`${data.count} x ${data.price}`}</span>
         <CurrencyIcon type="primary" />
       </span>
     </article>
