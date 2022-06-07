@@ -8,7 +8,8 @@ import { rootReducer } from "./services/reducers/index.js";
 import { compose, createStore, applyMiddleware } from "redux";
 import { BrowserRouter } from "react-router-dom";
 import { socketMiddleware } from "./services/middleware/socket-middleware";
-import { wsURL, getCookie } from "./utils/constants";
+import { wsURL } from "./utils/constants";
+import { getOrders } from "./services/actions/wsActions";
 import {
   WS_ORDER_CONNECTION_CLOSED,
   WS_ORDER_CONNECTION_ERROR,
@@ -52,12 +53,12 @@ const enhancer = composeEnhancers(
   applyMiddleware(
     thunk,
     socketMiddleware(
-      `${wsURL}?token=${getCookie("accessToken")}`,
-      wsActionsOrders, true
+      wsURL,
+      wsActionsOrders, getOrders, true, true
     ),
     socketMiddleware(
-      `${wsURL}/all`,
-      wsActionsFeed
+      wsURL,
+      wsActionsFeed, getOrders
     )
   )
 );

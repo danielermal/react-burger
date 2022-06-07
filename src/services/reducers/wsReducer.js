@@ -11,7 +11,7 @@ import {
 
 const initialState = {
   wsOrderConnection: false,
-  ordersMessages: { orders: null, total: null, totalToday: null },
+  ordersMessages: {},
   wsFeedConnection: false,
   feedMessages: {}
 };

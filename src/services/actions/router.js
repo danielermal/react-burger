@@ -136,6 +136,7 @@ export function getUserInfo() {
         updateToken()
           .then(checkResponse)
           .then((data) => {
+            console.log(data);
             let accessToken = data.accessToken.split('Bearer ')[1]
             setCookie('accessToken', accessToken)
             localStorage.setItem("refreshToken", data.refreshToken);
@@ -191,6 +192,7 @@ export function logout() {
       .then(checkResponse)
       .then((data) => {
         deleteCookie('accessToken')
+        console.log(document.cookie);
         localStorage.removeItem("refreshToken");
         dispatch({
           type: LOGOUT_SUCCESS,

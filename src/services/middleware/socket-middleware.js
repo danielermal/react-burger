@@ -1,6 +1,6 @@
-import { getOrders } from "../actions/wsActions"
+import { getCookie } from "../../utils/constants"
 
-export const socketMiddleware = (wsUrl, wsActions, reverse=false) => {
+export const socketMiddleware = (wsUrl, wsActions, getOrders, reverse=false, profile=false) => {
     return store => {
         let socket = null
 
@@ -9,8 +9,12 @@ export const socketMiddleware = (wsUrl, wsActions, reverse=false) => {
             const { type, payload } = action;
             const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
 
-            if (type === wsInit) {
-                socket = new WebSocket(wsUrl)
+            if (type === wsInit && profile === true) {
+                socket = new WebSocket(`${wsUrl}?token=${getCookie("accessToken")}`)
+            }
+
+            if (type === wsInit && profile === false) {
+              socket = new WebSocket(`${wsUrl}/all`)
             }
 
             if (socket) {

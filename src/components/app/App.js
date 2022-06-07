@@ -19,7 +19,6 @@ import { NotFound } from "../../pages/not-found";
 import { Feed } from "../../pages/feed";
 import { ProfileOrders } from "../../pages/orders";
 import { Order } from "../../pages/order";
-import { WS_ORDER_CONNECTION_START, WS_FEED_CONNECTION_START } from "../../services/actions/wsActions";
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -33,15 +32,13 @@ export const App = () => {
   const { items, itemsRequest, itemsFailed } = useSelector(
     (store) => store.reducer
   );
-  const profileOrders = useSelector((store) => store.wsReducer.ordersMessages.orders);
-  const {orders} = useSelector((store) => store.wsReducer.feedMessages)
-  React.useEffect(() => {
-    if (isAuth && items.length) {
-      dispatch({ type: WS_ORDER_CONNECTION_START });
-    }
-  }, [isAuth, items]);
+  const { orders } = useSelector((store) => store.wsReducer.feedMessages);
+  const profileOrders = useSelector(
+    (store) => store.wsReducer.ordersMessages.orders
+  );
 
   React.useEffect(() => {
+    if (!isAuth)
     document.title = "react burger";
     dispatch(getUserInfo());
   }, [dispatch, isAuth]);
@@ -52,13 +49,6 @@ export const App = () => {
     }
   }, [dispatch, items]);
 
-  React.useEffect(() => {
-    if (items.length) {
-      dispatch({type: WS_FEED_CONNECTION_START})
-    }
-  }, [items])
-
-
   return (
     <>
       {itemsRequest ? (
@@ -67,7 +57,7 @@ export const App = () => {
         </span>
       ) : <></>}
       {itemsFailed && "Произошла ошибка"}
-      {items.length && orders && (
+      {items.length && (
         <>
           <AppHeader background={background || backgroundOrder || backgroundFeed} />
           <Routes location={background || backgroundOrder || backgroundFeed}>
@@ -112,7 +102,7 @@ export const App = () => {
                 </ProtectedRoute>
               }
             >
-              {profileOrders && 
+              
               <>
               <Route path="orders" element={<ProfileOrders />} />
               <Route
@@ -125,7 +115,7 @@ export const App = () => {
                 }
               />
               </>
-              }
+              
               
             </Route>
             <Route
@@ -182,7 +172,7 @@ export const App = () => {
           </Routes>
           )}
 
-          {backgroundOrder && profileOrders && (
+          {backgroundOrder && (
             <Routes>
               <Route
                 path="/profile/orders/:id"
