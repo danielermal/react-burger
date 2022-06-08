@@ -10,6 +10,7 @@ import { BrowserRouter } from "react-router-dom";
 import { socketMiddleware } from "./services/middleware/socket-middleware";
 import { wsURL } from "./utils/constants";
 import { getOrders } from "./services/actions/wsActions";
+import { getCookie } from "./utils/constants";
 import {
   WS_ORDER_CONNECTION_CLOSED,
   WS_ORDER_CONNECTION_ERROR,
@@ -53,11 +54,11 @@ const enhancer = composeEnhancers(
   applyMiddleware(
     thunk,
     socketMiddleware(
-      wsURL,
-      wsActionsOrders, getOrders, true, true
+      wsURL, `?token=${getCookie("accessToken")}`,
+      wsActionsOrders, getOrders, true
     ),
     socketMiddleware(
-      wsURL,
+      wsURL, '/all',
       wsActionsFeed, getOrders
     )
   )

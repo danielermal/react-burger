@@ -1,6 +1,4 @@
-import { getCookie } from "../../utils/constants"
-
-export const socketMiddleware = (wsUrl, wsActions, getOrders, reverse=false, profile=false) => {
+export const socketMiddleware = (wsUrl, payloadUrl, wsActions, onGetMessage, reverse=false) => {
     return store => {
         let socket = null
 
@@ -9,12 +7,8 @@ export const socketMiddleware = (wsUrl, wsActions, getOrders, reverse=false, pro
             const { type, payload } = action;
             const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
 
-            if (type === wsInit && profile === true) {
-                socket = new WebSocket(`${wsUrl}?token=${getCookie("accessToken")}`)
-            }
-
-            if (type === wsInit && profile === false) {
-              socket = new WebSocket(`${wsUrl}/all`)
+            if (type === wsInit) {
+                socket = new WebSocket(`${wsUrl}${payloadUrl}`)
             }
 
             if (socket) {
@@ -30,7 +24,7 @@ export const socketMiddleware = (wsUrl, wsActions, getOrders, reverse=false, pro
                   socket.onmessage = event => {
                     const { data } = event;
                     const parsedData = JSON.parse(data);
-                    dispatch(getOrders(onMessage, parsedData, reverse));
+                    dispatch(onGetMessage(onMessage, parsedData, reverse));
                   };
 
                   socket.onclose = event => {
