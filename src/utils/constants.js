@@ -69,4 +69,3 @@ export function setCookie(name, value, props) {
     setCookie(name, null, { expires: -1 });
   }
   
-deleteCookie('accessToken')
