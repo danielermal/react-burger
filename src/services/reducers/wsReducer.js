@@ -11,6 +11,7 @@ import {
 
 const initialState = {
   wsOrderConnection: false,
+  wsOrderError: false,
   ordersMessages: {},
   wsFeedConnection: false,
   feedMessages: {}
@@ -21,6 +22,7 @@ export const wsReducer = (state = initialState, action) => {
     case WS_ORDER_CONNECTION_SUCCESS:
       return {
         ...state,
+        wsOrderError: false,
         wsOrderConnection: true,
       };
 
@@ -28,6 +30,7 @@ export const wsReducer = (state = initialState, action) => {
       return {
         ...state,
         wsOrderConnection: false,
+        wsOrderError: true
       };
 
     case WS_ORDER_CONNECTION_CLOSED:

@@ -3,9 +3,10 @@ import styles from "../../pages/styles.module.css";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { updateUserInfo } from "../../services/actions/router";
+import { updateUserInfo} from "../../services/actions/router";
 
 export const ProfileForm = () => {
+
   const dispatch = useDispatch();
 
   const { name, email } = useSelector((store) => store.routeReducer.user);

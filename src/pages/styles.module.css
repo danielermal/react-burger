@@ -95,6 +95,11 @@ h1 {
   height: 64px;
   text-decoration: none;
   cursor: pointer;
+  transition: opacity 0.3s linear;
+}
+
+.profile_item:hover {
+  opacity: 0.5;
 }
 
 .profile_form {

@@ -89,7 +89,7 @@ export const getOrderRequest = async (totalId) =>  {
     })
   }
 
-  export const updateToken = async () => {
+  export const updateTokenRequest = async () => {
     return await fetch(`${URL}auth/token`, {
       method: 'POST',
       headers: {

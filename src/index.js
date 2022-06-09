@@ -10,17 +10,16 @@ import { BrowserRouter } from "react-router-dom";
 import { socketMiddleware } from "./services/middleware/socket-middleware";
 import { wsURL } from "./utils/constants";
 import { getOrders } from "./services/actions/wsActions";
-import { getCookie } from "./utils/constants";
+import { wsOrderStart } from "./services/actions/wsActions";
+import { wsFeedStart } from "./services/actions/wsActions";
 import {
   WS_ORDER_CONNECTION_CLOSED,
   WS_ORDER_CONNECTION_ERROR,
-  WS_ORDER_CONNECTION_START,
   WS_ORDER_CONNECTION_SUCCESS,
   WS_ORDER_GET_MESSAGE,
   WS_ORDER_SEND_MESSAGE,
   WS_FEED_CONNECTION_CLOSED,
   WS_FEED_CONNECTION_ERROR,
-  WS_FEED_CONNECTION_START,
   WS_FEED_CONNECTION_SUCCESS,
   WS_FEED_GET_MESSAGE,
   WS_FEED_SEND_MESSAGE,
@@ -28,7 +27,7 @@ import {
 import thunk from "redux-thunk";
 
 const wsActionsOrders = {
-  wsInit: WS_ORDER_CONNECTION_START,
+  wsInit: wsOrderStart,
   wsSendMessage: WS_ORDER_SEND_MESSAGE,
   onOpen: WS_ORDER_CONNECTION_SUCCESS,
   onClose: WS_ORDER_CONNECTION_CLOSED,
@@ -37,7 +36,7 @@ const wsActionsOrders = {
 };
 
 const wsActionsFeed = {
-  wsInit: WS_FEED_CONNECTION_START,
+  wsInit: wsFeedStart,
   wsSendMessage: WS_FEED_SEND_MESSAGE,
   onOpen: WS_FEED_CONNECTION_SUCCESS,
   onClose: WS_FEED_CONNECTION_CLOSED,
@@ -54,11 +53,11 @@ const enhancer = composeEnhancers(
   applyMiddleware(
     thunk,
     socketMiddleware(
-      wsURL, `?token=${getCookie("accessToken")}`,
+      wsURL,
       wsActionsOrders, getOrders, true
     ),
     socketMiddleware(
-      wsURL, '/all',
+      wsURL,
       wsActionsFeed, getOrders
     )
   )

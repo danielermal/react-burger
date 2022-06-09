@@ -10,7 +10,7 @@ import { Reset } from "../../pages/reset-password";
 import { Profile } from "../../pages/profile";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions";
-import { getUserInfo } from "../../services/actions/router";
+import { getUserInfo, updateToken } from "../../services/actions/router";
 import { ProtectedRoute } from "../protecred-route/protected-route";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { Modal } from "../modal/modal";
@@ -19,6 +19,7 @@ import { NotFound } from "../../pages/not-found";
 import { Feed } from "../../pages/feed";
 import { ProfileOrders } from "../../pages/orders";
 import { Order } from "../../pages/order";
+import { getCookie } from "../../utils/constants";
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,6 @@ export const App = () => {
   const backgroundFeed = location.state?.backgroundFeed
   const navigate = useNavigate();
   const closeModal = React.useCallback(() => navigate(-1), [navigate]);
-  const { isAuth } = useSelector((store) => store.routeReducer);
   const { items, itemsRequest, itemsFailed } = useSelector(
     (store) => store.reducer
   );
@@ -37,8 +37,9 @@ export const App = () => {
     (store) => store.wsReducer.ordersMessages.orders
   );
 
+  const {isAuth} = useSelector((store) => store.routeReducer)
+
   React.useEffect(() => {
-    if (!isAuth)
     document.title = "react burger";
     dispatch(getUserInfo());
   }, [dispatch, isAuth]);

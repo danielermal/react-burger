@@ -1,4 +1,4 @@
-export const socketMiddleware = (wsUrl, payloadUrl, wsActions, onGetMessage, reverse=false) => {
+export const socketMiddleware = (wsUrl, wsActions, onGetMessage, reverse=false) => {
     return store => {
         let socket = null
 
@@ -6,9 +6,8 @@ export const socketMiddleware = (wsUrl, payloadUrl, wsActions, onGetMessage, rev
             const {dispatch} = store
             const { type, payload } = action;
             const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
-
-            if (type === wsInit) {
-                socket = new WebSocket(`${wsUrl}${payloadUrl}`)
+            if (type === wsInit.type) {
+                socket = new WebSocket(`${wsUrl}${wsInit.url}`)
             }
 
             if (socket) {
