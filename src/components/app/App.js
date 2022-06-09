@@ -37,12 +37,10 @@ export const App = () => {
     (store) => store.wsReducer.ordersMessages.orders
   );
 
-  const {isAuth} = useSelector((store) => store.routeReducer)
-
   React.useEffect(() => {
     document.title = "react burger";
     dispatch(getUserInfo());
-  }, [dispatch, isAuth]);
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (!items.length) {
