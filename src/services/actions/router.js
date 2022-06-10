@@ -135,31 +135,26 @@ export function getUserInfo() {
         dispatch({
           type: GET_USER_INFO_FAILED,
         });
-        updateTokenRequest()
-          .then(checkResponse)
-          .then((data) => {
-            let accessToken = data.accessToken.split('Bearer ')[1]
-            setCookie('accessToken', accessToken)
-            localStorage.setItem("refreshToken", data.refreshToken);
-            getUserInfoRequest()
-              .then(checkResponse)
-              .then((data) => {
-                dispatch({
-                  type: GET_USER_INFO_SUCCESS,
-                  data,
-                });
-              })
-              .catch((err) => {
-                dispatch({
-                  type: GET_USER_INFO_FAILED,
-                });
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
       });
   };
+}
+
+export function updateToken(action) {
+  return function (dispatch) {
+    updateTokenRequest()
+    .then(checkResponse)
+    .then((data) => {
+      let accessToken = data.accessToken.split('Bearer ')[1]
+      setCookie('accessToken', accessToken)
+      localStorage.setItem("refreshToken", data.refreshToken);
+      if (action) {
+        dispatch(action)
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 }
 
 export function updateUserInfo(email, name) {

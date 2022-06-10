@@ -10,6 +10,7 @@ import {
   WS_ORDER_CONNECTION_START,
   WS_ORDER_CONNECTION_CLOSED,
 } from "../services/actions/wsActions";
+import { getCookie } from "../utils/constants";
 
 export const Order = ({ orders }) => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ export const Order = ({ orders }) => {
 
   React.useEffect(() => {
     if (items.length && location.pathname.includes("orders/")) {
-      dispatch({ type: WS_ORDER_CONNECTION_START });
+      dispatch({ type: WS_ORDER_CONNECTION_START, payload: `?token=${getCookie("accessToken")}`});
 
       return () => {
         dispatch({ type: WS_ORDER_CONNECTION_CLOSED });
@@ -27,7 +28,7 @@ export const Order = ({ orders }) => {
     }
 
     if (items.length && location.pathname.includes("feed/")) {
-      dispatch({ type: WS_FEED_CONNECTION_START });
+      dispatch({ type: WS_FEED_CONNECTION_START, payload: '/all' });
 
       return () => {
         dispatch({ type: WS_FEED_CONNECTION_CLOSED });

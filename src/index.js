@@ -10,14 +10,15 @@ import { BrowserRouter } from "react-router-dom";
 import { socketMiddleware } from "./services/middleware/socket-middleware";
 import { wsURL } from "./utils/constants";
 import { getOrders } from "./services/actions/wsActions";
-import { wsOrderStart } from "./services/actions/wsActions";
-import { wsFeedStart } from "./services/actions/wsActions";
+
 import {
+  WS_ORDER_CONNECTION_START,
   WS_ORDER_CONNECTION_CLOSED,
   WS_ORDER_CONNECTION_ERROR,
   WS_ORDER_CONNECTION_SUCCESS,
   WS_ORDER_GET_MESSAGE,
   WS_ORDER_SEND_MESSAGE,
+  WS_FEED_CONNECTION_START,
   WS_FEED_CONNECTION_CLOSED,
   WS_FEED_CONNECTION_ERROR,
   WS_FEED_CONNECTION_SUCCESS,
@@ -27,7 +28,7 @@ import {
 import thunk from "redux-thunk";
 
 const wsActionsOrders = {
-  wsInit: wsOrderStart,
+  wsInit: WS_ORDER_CONNECTION_START,
   wsSendMessage: WS_ORDER_SEND_MESSAGE,
   onOpen: WS_ORDER_CONNECTION_SUCCESS,
   onClose: WS_ORDER_CONNECTION_CLOSED,
@@ -36,7 +37,7 @@ const wsActionsOrders = {
 };
 
 const wsActionsFeed = {
-  wsInit: wsFeedStart,
+  wsInit: WS_FEED_CONNECTION_START,
   wsSendMessage: WS_FEED_SEND_MESSAGE,
   onOpen: WS_FEED_CONNECTION_SUCCESS,
   onClose: WS_FEED_CONNECTION_CLOSED,

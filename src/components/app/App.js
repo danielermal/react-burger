@@ -26,7 +26,7 @@ export const App = () => {
   const location = useLocation();
   const background = location.state?.background;
   const backgroundOrder = location.state?.backgroundOrder;
-  const backgroundFeed = location.state?.backgroundFeed
+  const backgroundFeed = location.state?.backgroundFeed;
   const navigate = useNavigate();
   const closeModal = React.useCallback(() => navigate(-1), [navigate]);
   const { items, itemsRequest, itemsFailed } = useSelector(
@@ -36,11 +36,22 @@ export const App = () => {
   const profileOrders = useSelector(
     (store) => store.wsReducer.ordersMessages.orders
   );
+  const cookie = getCookie("accessToken");
+
+  const { getUserInfoFailed } = useSelector((store) => store.routeReducer);
+
+  React.useEffect(() => {
+    if (getUserInfoFailed) {
+      dispatch(updateToken(getUserInfo()));
+    }
+  }, [getUserInfoFailed]);
 
   React.useEffect(() => {
     document.title = "react burger";
-    dispatch(getUserInfo());
-  }, [dispatch]);
+    if (cookie) {
+      dispatch(getUserInfo());
+    }
+  }, [dispatch, cookie]);
 
   React.useEffect(() => {
     if (!items.length) {
@@ -54,11 +65,15 @@ export const App = () => {
         <span>
           Загрузка<span className={styles.loading}>...</span>
         </span>
-      ) : <></>}
+      ) : (
+        <></>
+      )}
       {itemsFailed && "Произошла ошибка"}
       {items.length && (
         <>
-          <AppHeader background={background || backgroundOrder || backgroundFeed} />
+          <AppHeader
+            background={background || backgroundOrder || backgroundFeed}
+          />
           <Routes location={background || backgroundOrder || backgroundFeed}>
             <Route path="/" element={<Index />} />
             <Route
@@ -101,21 +116,24 @@ export const App = () => {
                 </ProtectedRoute>
               }
             >
-              
               <>
-              <Route path="orders" element={<ProfileOrders />} />
-              <Route
-                path="orders/:id"
-                element={
-                  <Modal black={true} title={""}>
-                    <Order orders={profileOrders} />
-                  </Modal>
-                  
-                }
-              />
+                <Route
+                  path="orders"
+                  element={
+                    <ProtectedRoute>
+                      <ProfileOrders />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="orders/:id"
+                  element={
+                    <Modal black={true} title={""}>
+                      <Order orders={profileOrders} />
+                    </Modal>
+                  }
+                />
               </>
-              
-              
             </Route>
             <Route
               path="/ingredients/:id"
@@ -158,17 +176,17 @@ export const App = () => {
 
           {backgroundFeed && (
             <Routes>
-            <Route
-              path="/feed/:id"
-              element={
-                <>
-                  <Modal onClose={closeModal} title={""}>
-                    <Order orders={orders} />
-                  </Modal>
-                </>
-              }
-            />
-          </Routes>
+              <Route
+                path="/feed/:id"
+                element={
+                  <>
+                    <Modal onClose={closeModal} title={""}>
+                      <Order orders={orders} />
+                    </Modal>
+                  </>
+                }
+              />
+            </Routes>
           )}
 
           {backgroundOrder && (

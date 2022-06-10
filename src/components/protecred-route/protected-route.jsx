@@ -8,11 +8,8 @@ export const ProtectedRoute = ({children, anonymus = false, reset = false}) => {
     const {isAuth, resetPasswordSuccess, getUserInfoRequest } = useSelector(
         (store) => store.routeReducer
     );
-
     const location = useLocation()
-
     const from = location.state?.from?.pathname;
-
     if (getUserInfoRequest) {
         return <>{<span>Загрузка<span className={styles.loading}>...</span></span>}</>
     }

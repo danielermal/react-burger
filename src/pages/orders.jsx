@@ -5,6 +5,7 @@ import { FeedItem, FeedIcon } from "../components/feed-item/feed-item";
 import { useSelector,useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { WS_ORDER_CONNECTION_START, WS_ORDER_CONNECTION_CLOSED } from "../services/actions/wsActions";
+import { getCookie } from "../utils/constants";
 
 export const ProfileOrders = () => {
 
@@ -17,9 +18,9 @@ export const ProfileOrders = () => {
 
   React.useEffect(() => {
     if (items.length) {
-      dispatch({ type: WS_ORDER_CONNECTION_START });
+      dispatch({ type: WS_ORDER_CONNECTION_START, payload: `?token=${getCookie("accessToken")}`});
     }
-
+    
     return () => {
       dispatch({ type: WS_ORDER_CONNECTION_CLOSED})
     }

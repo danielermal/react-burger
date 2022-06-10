@@ -4,6 +4,7 @@ import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { updateUserInfo} from "../../services/actions/router";
+import { updateToken } from "../../services/actions/router";
 
 export const ProfileForm = () => {
 
@@ -17,9 +18,17 @@ export const ProfileForm = () => {
     password: "",
   });
 
+  const {updateUserInfoFailed} = useSelector((store) => store.routeReducer)
+
   React.useEffect(() => {
     setValue({ ...value, name: name, login: email });
   }, [name, email]);
+
+  React.useEffect(() => {
+    if (updateUserInfoFailed) {
+      dispatch(updateToken((updateUserInfo(value.login, value.name))))
+    }
+  }, [updateUserInfoFailed])
 
 
   const onChange = (e) => {

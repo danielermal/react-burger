@@ -18,7 +18,7 @@ export const Feed = () => {
 
   React.useEffect(() => {
     if (items.length) {
-      dispatch({ type: WS_FEED_CONNECTION_START });
+      dispatch({ type: WS_FEED_CONNECTION_START, payload: '/all' });
     }
 
     return () => {

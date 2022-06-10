@@ -88,7 +88,7 @@ export const routeReducer = (state = initialState, action) => {
             return {...state, getUserInfoRequest: true}
         }
         case GET_USER_INFO_SUCCESS: {
-            return {...state, getUserInfoRequest: false, getUserInfoSuccess: true, isAuth: true, user: {name: action.data.user.name, email: action.data.user.email}}
+            return {...state, getUserInfoRequest: false, getUserInfoFailed: false, getUserInfoSuccess: true, isAuth: true, user: {name: action.data.user.name, email: action.data.user.email}}
         }
         case GET_USER_INFO_FAILED: {
             return {...state, getUserInfoRequest: false, getUserInfoFailed: true}
@@ -97,7 +97,7 @@ export const routeReducer = (state = initialState, action) => {
             return {...state, updateUserInfoRequest: true}
         }
         case UPDATE_USER_INFO_SUCCESS: {
-            return {...state, updateUserInfoRequest: false, updateUserInfoSuccess: true, user: {name: action.data.user.name, email: action.data.user.email}}
+            return {...state, updateUserInfoRequest: false, updateUserInfoFailed: false, updateUserInfoSuccess: true, user: {name: action.data.user.name, email: action.data.user.email}}
         }
         case UPDATE_USER_INFO_FAILED: {
             return {...state, updateUserInfoRequest: false, updateUserInfoFailed: true}

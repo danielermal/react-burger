@@ -6,8 +6,9 @@ export const socketMiddleware = (wsUrl, wsActions, onGetMessage, reverse=false) 
             const {dispatch} = store
             const { type, payload } = action;
             const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
-            if (type === wsInit.type) {
-                socket = new WebSocket(`${wsUrl}${wsInit.url}`)
+            // прошу прощения за затупки, наконец-то понял, где корректно передавать url
+            if (type === wsInit) {
+                socket = new WebSocket(`${wsUrl}${payload}`)
             }
 
             if (socket) {
