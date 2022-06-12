@@ -1,6 +1,7 @@
 import { DELETE_ITEM, ADD_ITEM, GET_ITEMS_REQUEST, GET_ITEMS_SUCCESS, GET_ITEMS_FAILED, GET_ORDER_REQUEST, GET_ORDER_SUCCESS, GET_ORDER_FAILED, CHANGE_ITEM } from '../actions/index'
 import { combineReducers } from 'redux';
 import { routeReducer } from './router';
+import { wsReducer } from './wsReducer';
 
 const initialState = {
     items: [],
@@ -87,4 +88,4 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-export const rootReducer = combineReducers({reducer, routeReducer})
+export const rootReducer = combineReducers({reducer, routeReducer, wsReducer})

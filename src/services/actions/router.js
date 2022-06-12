@@ -3,7 +3,10 @@ import {
   registrationRequest,
   authorizationRequest,
   getUserInfoRequest,
-  updateToken, logoutRequest, newPasswordRequest, updateUserInfoRequest
+  updateTokenRequest,
+  logoutRequest,
+  newPasswordRequest,
+  updateUserInfoRequest,
 } from "../Api";
 
 import { setCookie, deleteCookie, checkResponse } from "../../utils/constants";
@@ -99,8 +102,8 @@ export function authorization(arg) {
     authorizationRequest(arg)
       .then(checkResponse)
       .then((data) => {
-        let accessToken = data.accessToken.split('Bearer ')[1]
-        setCookie('accessToken', accessToken)
+        let accessToken = data.accessToken.split("Bearer ")[1];
+        setCookie("accessToken", accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
         dispatch({
           type: AUTHORIZATION_SUCCESS,
@@ -123,7 +126,6 @@ export function getUserInfo() {
     getUserInfoRequest()
       .then(checkResponse)
       .then((data) => {
-        console.log(data);
         dispatch({
           type: GET_USER_INFO_SUCCESS,
           data,
@@ -133,31 +135,26 @@ export function getUserInfo() {
         dispatch({
           type: GET_USER_INFO_FAILED,
         });
-        updateToken()
-          .then(checkResponse)
-          .then((data) => {
-            let accessToken = data.accessToken.split('Bearer ')[1]
-            setCookie('accessToken', accessToken)
-            localStorage.setItem("refreshToken", data.refreshToken);
-            getUserInfoRequest()
-              .then(checkResponse)
-              .then((data) => {
-                dispatch({
-                  type: GET_USER_INFO_SUCCESS,
-                  data,
-                });
-              })
-              .catch((err) => {
-                dispatch({
-                  type: GET_USER_INFO_FAILED,
-                });
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
       });
   };
+}
+
+export function updateToken(action) {
+  return function (dispatch) {
+    updateTokenRequest()
+    .then(checkResponse)
+    .then((data) => {
+      let accessToken = data.accessToken.split('Bearer ')[1]
+      setCookie('accessToken', accessToken)
+      localStorage.setItem("refreshToken", data.refreshToken);
+      if (action) {
+        dispatch(action)
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 }
 
 export function updateUserInfo(email, name) {
@@ -177,9 +174,9 @@ export function updateUserInfo(email, name) {
         dispatch({
           type: UPDATE_USER_INFO_FAILED,
         });
-      })
-    }
-  }
+      });
+  };
+}
 
 export function logout() {
   return function (dispatch) {
@@ -189,7 +186,7 @@ export function logout() {
     logoutRequest()
       .then(checkResponse)
       .then((data) => {
-        deleteCookie('accessToken')
+        deleteCookie("accessToken");
         localStorage.removeItem("refreshToken");
         dispatch({
           type: LOGOUT_SUCCESS,

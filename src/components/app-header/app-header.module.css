@@ -12,7 +12,7 @@
 
 .header_modal {
     margin: 0 auto;
-    z-index: 3;
+    z-index: 100;
 }
 
 .nav {

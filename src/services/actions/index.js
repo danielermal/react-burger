@@ -1,4 +1,5 @@
 import { getIngredientsRequest, getOrderRequest } from "../Api"
+import { checkResponse } from "../../utils/constants";
 import { v4 as uuidv4 } from "uuid";
 
 export const DELETE_ITEM = 'DELETE_ITEM'
@@ -18,12 +19,7 @@ export function getIngredients () {
         dispatch({
             type: GET_ITEMS_REQUEST
           });
-          getIngredientsRequest().then((res) => {
-            if (res.ok) {
-              return res.json()
-            }
-            return Promise.reject(res.status)
-          })
+          getIngredientsRequest().then(checkResponse)
           .then((data) => {
             dispatch({
                 type: GET_ITEMS_SUCCESS,
@@ -43,12 +39,7 @@ export function getOrder (totalId) {
     dispatch({
       type: GET_ORDER_REQUEST
     });
-    getOrderRequest(totalId).then((res) => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(res.status)
-    })
+    getOrderRequest(totalId).then(checkResponse)
     .then((data) => {
       dispatch({
           type: GET_ORDER_SUCCESS,

@@ -81,11 +81,15 @@ export const BurgerConstructor = () => {
   const dispatch = useDispatch();
 
   const { constructorItems, bun } = useSelector((store) => store.reducer);
-  const ingredients = [constructorItems, bun];
   const totalPrice =
     constructorItems.reduce((acc, item) => acc + item.price, 0) +
     (typeof bun.price == "number" ? bun.price : 0);
-  const totalId = ingredients.map((item) => item._id);
+
+  const totalId = React.useMemo(() => {
+    const itemsId = constructorItems.map(item => item._id)
+    return [...itemsId, bun._id]
+  }, [constructorItems, bun])
+
   const [state, setState] = React.useState({
     overlay: false,
   });
