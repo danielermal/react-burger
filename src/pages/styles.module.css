@@ -246,6 +246,11 @@ h1 {
 .link_order {
   text-decoration: none;
   color: #f2f2f3;
+  transition: opacity .3s linear;
+}
+
+.link_order:hover {
+  opacity: .3;
 }
 
 @keyframes loading {

@@ -66,6 +66,11 @@
   cursor: pointer;
   color: #F2F2F3;
   text-decoration: none;
+  overflow: hidden;
+}
+
+.card:hover .image {
+  transform: scale(1.1);
 }
 
 .image {
@@ -73,6 +78,7 @@
   width: 100%;
   margin: 0 auto;
   object-fit: cover;
+  transition: transform .3s linear;
 }
 
 .price {
