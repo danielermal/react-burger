@@ -14,10 +14,11 @@ ____
 ___
 ## 2. Технологии ##
 * React - *^17.0.2v*
-* TypeScript - *^4.6.4v*
+* TypeScript - *^4.5.5v*
 * React-redux - *^7.2.8v*
-* React-router-dom - *^5.2.1v*
-* React-dnd - "^16.0.1"
+* redux-thunk - *2.4.1*,
+* React-router-dom - *^6.3.0v*
+* React-dnd - "^15.1.2"
 
 *Приложние развернуто с помощью Create React App*
 
@@ -32,5 +33,5 @@ ___
 ```npm run eject``` - *react-scripts eject*
 
 ___
-## 4. ##
+## 4. ## Ссылка на проект
 * [Ссылка на проект в GitPages](https://danielermal.github.io/react-burger/#/react-burger/)
