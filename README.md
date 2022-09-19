@@ -34,5 +34,5 @@ ___
 ```npm run eject``` - *react-scripts eject*
 
 ___
-## 4. ## Ссылка на проект
+## 4. Ссылка на проект
 * [Ссылка на проект в GitPages](https://danielermal.github.io/react-burger/#/react-burger/)
