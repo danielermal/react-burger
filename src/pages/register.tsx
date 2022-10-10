@@ -73,7 +73,7 @@ export const Register: FC = () => {
             />
           </div>
           <div className={styles.button_container}>
-            <Button type="primary" size="medium">
+            <Button type="primary" size="medium" htmlType="submit">
               Зарегистрироваться
             </Button>
           </div>
