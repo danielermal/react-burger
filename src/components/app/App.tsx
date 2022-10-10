@@ -127,10 +127,14 @@ export const App: FC = () => {
                 />
                 <Route
                   path="orders/:id"
-                  element={ profileOrders &&
-                    <Modal black={true} title={""}>
-                      <Order orders={profileOrders} />
-                    </Modal>
+                  element={
+                    profileOrders && (
+                      <>
+                        <Modal black={true} title={""}>
+                          <Order orders={profileOrders} />
+                        </Modal>
+                      </>
+                    )
                   }
                 />
               </>
@@ -148,12 +152,14 @@ export const App: FC = () => {
             <Route path="/feed" element={<Feed />} />
             <Route
               path="/feed/:id"
-              element={ orders &&
-                <>
-                  <Modal black={true} title={""}>
-                    <Order orders={orders} />
-                  </Modal>
-                </>
+              element={
+                orders && (
+                  <>
+                    <Modal black={true} title={""}>
+                      <Order orders={orders} />
+                    </Modal>
+                  </>
+                )
               }
             />
             <Route path="*" element={<NotFound />} />
@@ -178,12 +184,14 @@ export const App: FC = () => {
             <Routes>
               <Route
                 path="/feed/:id"
-                element={ orders &&
-                  <>
-                    <Modal onClose={closeModal} title={""}>
-                      <Order orders={orders} />
-                    </Modal>
-                  </>
+                element={
+                  orders && (
+                    <>
+                      <Modal onClose={closeModal} title={""}>
+                        <Order orders={orders} />
+                      </Modal>
+                    </>
+                  )
                 }
               />
             </Routes>
@@ -193,10 +201,12 @@ export const App: FC = () => {
             <Routes>
               <Route
                 path="/profile/orders/:id"
-                element={ profileOrders &&
-                  <Modal title={""} onClose={closeModal}>
-                    <Order orders={profileOrders} />
-                  </Modal>
+                element={
+                  profileOrders && (
+                    <Modal title={""} onClose={closeModal}>
+                      <Order orders={profileOrders} />
+                    </Modal>
+                  )
                 }
               />
             </Routes>

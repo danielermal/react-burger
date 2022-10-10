@@ -3,7 +3,7 @@ import modal from "./modal-overlay.module.css";
 
 type TModalOverlay = {
   children: ReactNode;
-  close?: () => void;
+  close?: (() => void) | null;
 };
 
 export const ModalOverlay: FC<TModalOverlay> = (props) => {

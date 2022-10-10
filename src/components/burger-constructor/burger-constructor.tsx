@@ -7,7 +7,11 @@ import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Modal } from "../modal/modal";
 import { OrderDetails } from "../order-details/order-details";
 import { useDispatch, useSelector } from "../../services/hooks";
-import { getOrder, sortIngredients, addIngredients } from "../../services/actions";
+import {
+  getOrder,
+  sortIngredients,
+  addIngredients,
+} from "../../services/actions";
 import { useDrag } from "react-dnd";
 import { useDrop } from "react-dnd";
 import { deleteItemAction } from "../../services/actions";
@@ -17,13 +21,13 @@ import { useNavigate } from "react-router-dom";
 interface IListItem {
   item: INewItem;
   index: number;
-};
+}
 
 interface IBun {
   bun: INewItem;
-  type: 'top' | 'bottom'
+  type: "top" | "bottom";
   position: string;
-};
+}
 
 const Bun: FC<IBun> = ({ bun, type, position }) => {
   return (
@@ -52,7 +56,7 @@ const ListItem: FC<IListItem> = ({ item, index }) => {
   });
 
   interface IItemDrop extends INewItem {
-    index: number
+    index: number;
   }
 
   const deleteItem = () => {
@@ -85,27 +89,31 @@ const ListItem: FC<IListItem> = ({ item, index }) => {
   );
 };
 
-export const BurgerConstructor:FC = () => {
+export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
 
   const { constructorItems, bun } = useSelector((store) => store.reducer);
   const totalPrice = React.useMemo(() => {
-      return constructorItems.reduce((acc: number, item: INewItem):number => acc + item.price, 0) +
-    (typeof bun?.price === 'number' ? bun?.price : 0)
-  }, [constructorItems, bun])
+    return (
+      constructorItems.reduce(
+        (acc: number, item: INewItem): number => acc + item.price,
+        0
+      ) + (typeof bun?.price === "number" ? bun?.price : 0)
+    );
+  }, [constructorItems, bun]);
 
   const totalId = React.useMemo((): Array<string> => {
-    const itemsId = constructorItems.map((item: INewItem): string => item._id)
-    return [...itemsId, bun?._id ? bun._id : '']
-  }, [constructorItems, bun])
+    const itemsId = constructorItems.map((item: INewItem): string => item._id);
+    return [...itemsId, bun?._id ? bun._id : ""];
+  }, [constructorItems, bun]);
 
   const [state, setState] = React.useState({
     overlay: false,
   });
 
-  const {isAuth} = useSelector((store) => store.routeReducer);
+  const { isAuth } = useSelector((store) => store.routeReducer);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "items",
@@ -127,9 +135,8 @@ export const BurgerConstructor:FC = () => {
 
   const openModalOrder = () => {
     if (!isAuth) {
-      navigate('/login', {replace: true})
-    }
-    else {
+      navigate("/login", { replace: true });
+    } else {
       setState({ ...state, overlay: true });
       dispatch(getOrder(totalId));
     }
@@ -169,6 +176,7 @@ export const BurgerConstructor:FC = () => {
           size="large"
           onClick={openModalOrder}
           disabled={bun?.price && constructorItems.length ? false : true}
+          htmlType="button"
         >
           {bun?.price && constructorItems.length
             ? "Оформить заказ"
@@ -176,7 +184,11 @@ export const BurgerConstructor:FC = () => {
         </Button>
         {state.overlay && (
           <Modal onClose={closeModal} title={""}>
-            {orderRequest && <span>Загрузка<span className={burgerConstructor.loading}>...</span></span>}
+            {orderRequest && (
+              <span>
+                Загрузка<span className={burgerConstructor.loading}>...</span>
+              </span>
+            )}
             {orderFailed && "Произошла ошибка"}
             {!orderRequest && !orderFailed && <OrderDetails number={order} />}
           </Modal>
